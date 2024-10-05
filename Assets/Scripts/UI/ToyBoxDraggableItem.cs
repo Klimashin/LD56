@@ -48,9 +48,11 @@ public class ToyBoxDraggableItem : MonoBehaviour, IBeginDragHandler, IEndDragHan
             {
                 var zoneHitData = gameField.GetZoneHitData(raycastResult);
                 Debug.Log($"GameField was hit! HitData: {zoneHitData}");
-                _battleController.PlacePlayerCharacter(_characterData, zoneHitData);
-                Destroy(gameObject);
-                return;
+                if (_battleController.PlacePlayerCharacter(_characterData, zoneHitData))
+                {
+                    Destroy(gameObject);
+                    return;
+                }
             }
         }
         
@@ -74,7 +76,7 @@ public class ToyBoxDraggableItem : MonoBehaviour, IBeginDragHandler, IEndDragHan
                     continue;
                 }
 
-                if (_battleController.CanPlacePlayerCharacter(_characterData, zoneHitData))
+                if (_battleController.CanPlacePlayerCharacter(zoneHitData))
                 {
                     // highlight
                 }

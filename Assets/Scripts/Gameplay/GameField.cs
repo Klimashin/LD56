@@ -6,9 +6,11 @@ public class GameField : MonoBehaviour
 {
     public Floor[] Floors;
 
-    private void Start()
+    public Vector2 GetSlotPosition(CharacterPosition characterPosition)
     {
-        
+        return characterPosition.zoneType == ZoneType.Left
+            ? Floors[characterPosition.floorIndex].LeftZone.GetSlotPosition(characterPosition.zoneIndex)
+            : Floors[characterPosition.floorIndex].RightZone.GetSlotPosition(characterPosition.zoneIndex);
     }
 
     public ZoneHitData GetZoneHitData(RaycastResult raycastResult)
@@ -74,6 +76,8 @@ public enum ZoneType
 [Serializable]
 public class Floor
 {
+    public const int FLOOR_SLOTS_COUNT = 3;
+    
     public Transform FloorBottomCenter;
     public Vector2 ZoneSize;
     public float ZoneOffsetFromCenter;
@@ -82,13 +86,13 @@ public class Floor
     public ZoneData LeftZone => new ZoneData(
         (Vector2)FloorBottomCenter.position - new Vector2(ZoneOffsetFromCenter + ZoneSize.x, 0f),
         ZoneSize, 
-        5, 
+        FLOOR_SLOTS_COUNT, 
         ZoneSlotPointVerticalOffset,
         ZoneType.Left);
     public ZoneData RightZone => new ZoneData(
         (Vector2)FloorBottomCenter.position + new Vector2(ZoneOffsetFromCenter, 0f),
         ZoneSize,
-        5,
+        FLOOR_SLOTS_COUNT,
         ZoneSlotPointVerticalOffset,
         ZoneType.Right);
 }

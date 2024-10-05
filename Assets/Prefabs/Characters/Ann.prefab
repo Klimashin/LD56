@@ -23,7 +23,7 @@ PrefabInstance:
     - target: {fileID: 5556769633780039811, guid: f5f0c4fe81aef4e47819f73d1922e166, type: 3}
       propertyPath: m_Sprite
       value: 
-      objectReference: {fileID: 21300000, guid: 68238fc8ab498be4aaac9471f9dc8c3f, type: 3}
+      objectReference: {fileID: 21300000, guid: 456ca8a7ae5e487489ff529f51afcdf2, type: 3}
     - target: {fileID: 5556769633780039811, guid: f5f0c4fe81aef4e47819f73d1922e166, type: 3}
       propertyPath: m_WasSpriteAssigned
       value: 1
@@ -54,7 +54,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6406524436679283569, guid: f5f0c4fe81aef4e47819f73d1922e166, type: 3}
       propertyPath: m_Name
-      value: TeddyBear
+      value: Ann
       objectReference: {fileID: 0}
     - target: {fileID: 8160896474220360630, guid: f5f0c4fe81aef4e47819f73d1922e166, type: 3}
       propertyPath: m_fontSizeBase

@@ -800,22 +800,18 @@ MonoBehaviour:
   - teddy
   - monkey
   - monkey
-  - monkey
-  - monkey
   _enemiesWaves:
   - Wave:
     - soldier
     - soldier
+    - soldier
   - Wave:
-    - teddy
-    - monkey
-    - monkey
+    - soldier heavy
   - Wave:
-    - ann
-    - teddy
-  - Wave:
-    - ann
-  _coreBaseHp: 15
+    - soldier heavy
+    - soldier
+    - soldier
+  _coreBaseHp: 50
 --- !u!61 &207262616
 BoxCollider2D:
   m_ObjectHideFlags: 0

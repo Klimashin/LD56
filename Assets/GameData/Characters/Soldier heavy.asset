@@ -10,11 +10,11 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: cc5c67797fa41ff4b9a03f4b0a02a85e, type: 3}
-  m_Name: Officer
+  m_Name: Soldier heavy
   m_EditorClassIdentifier: 
-  CharacterPrefab: {fileID: 0}
+  CharacterPrefab: {fileID: 3217989162714998004, guid: 0f31848fb636f8945a48128db301325a, type: 3}
   CharacterUiDraggablePrefab: {fileID: 0}
-  Hp: 20
+  Hp: 15
   Power: 3
   MainAbility: {fileID: 11400000, guid: a0beba05b132c3142be27329d5d7f82a, type: 2}
   OnDeathAbility: {fileID: 0}

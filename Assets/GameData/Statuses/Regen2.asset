@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 311533fe68233f9499cf5c094f346230, type: 3}
-  m_Name: Regen3
+  m_Name: Regen2
   m_EditorClassIdentifier: 
   TickTrigger: 1
-  value: 3
+  value: 2

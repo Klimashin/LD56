@@ -806,9 +806,9 @@ MonoBehaviour:
     - soldier
     - soldier
   - Wave:
-    - soldier heavy
+    - officer
   - Wave:
-    - soldier heavy
+    - officer
     - soldier
     - soldier
   _coreBaseHp: 50

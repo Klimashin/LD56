@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cc5c67797fa41ff4b9a03f4b0a02a85e, type: 3}
   m_Name: Officer
   m_EditorClassIdentifier: 
-  CharacterPrefab: {fileID: 0}
+  CharacterPrefab: {fileID: 3217989162714998004, guid: d844d3993ac0ad14098d2c25485aaec4, type: 3}
   CharacterUiDraggablePrefab: {fileID: 0}
   Hp: 20
   Power: 3

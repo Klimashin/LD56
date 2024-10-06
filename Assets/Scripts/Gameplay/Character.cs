@@ -112,12 +112,31 @@ public class Character : MonoBehaviour
         
         possibleTargets = possibleTargets.Where(t => !t.IsDead).ToList();
 
-        var mainAbility = _characterData.MainAbility;
-        var targets = mainAbility.SelectTargets(possibleTargets, this);
+        var ability = _characterData.OnFloorFightEndAbility;
+        if (ability != null)
+        {
+            var targets = ability.SelectTargets(possibleTargets, this);
 
-        await mainAbility.Apply(targets, this);
+            await ability.Apply(targets, this);
+        }
         
+        StatusEffectsTick();
+
         _handlesHashSet.Remove(nameof(HandleOnFloorFightEndAbility));
+    }
+
+    public void StatusEffectsTick()
+    {
+        foreach (var keyValuePair in StatusEffects)
+        {
+            var statusEffect = keyValuePair.Value;
+            if (statusEffect == null)
+            {
+                continue;
+            }
+
+            statusEffect.Tick(this);
+        }
     }
 
     public void Damage(int damage)

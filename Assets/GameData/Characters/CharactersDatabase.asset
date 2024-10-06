@@ -17,7 +17,9 @@ MonoBehaviour:
     - ann
     - teddy
     - monkey
+    - soldier
     _valueData:
     - {fileID: 11400000, guid: dba0296151a394c4ea358b28739508ae, type: 2}
     - {fileID: 11400000, guid: 7ada63c0ea054aa47b6495784e9eccbe, type: 2}
     - {fileID: 11400000, guid: bdaa134ef62a6824984532c88ae57424, type: 2}
+    - {fileID: 11400000, guid: fed6a87526b9c27479a9949d6d25ca90, type: 2}

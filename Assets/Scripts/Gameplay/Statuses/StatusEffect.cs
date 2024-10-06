@@ -16,9 +16,11 @@ public abstract class StatusEffect
 {
     public bool IsExpired { get; private set; }
 
-    public abstract void Apply(Character character);
+    public abstract void Tick(Character character);
     
     public abstract void Merge(StatusEffect newEffect);
+
+    public virtual string GetText() => string.Empty;
 
     public void Expire()
     {

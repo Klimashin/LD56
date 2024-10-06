@@ -14,13 +14,15 @@ public class RegenerationEffect : StatusEffectData
 public class Regeneration : StatusEffect
 {
     public int Value { get; private set; }
+    
+    public override string GetText() => $"R{Value.ToString()}";
 
     public Regeneration(int value)
     {
         Value = value;
     }
     
-    public override void Apply(Character character)
+    public override void Tick(Character character)
     {
         character.Heal(Value);
         Value--;

@@ -182,6 +182,14 @@ public class BattleController : MonoBehaviour, IEventsDispatcherClient
 
         CleanUpFloor(floorIndex);
 
+        var aliveCharactersOnTheFloor = GetAllAliveCharactersOnTheFloor(floorIndex);
+        foreach (var character in aliveCharactersOnTheFloor)
+        {
+            await character.HandleOnFloorFightEndAbility(aliveCharactersOnTheFloor);
+            
+            await UniTask.WaitUntil(() => !charactersOnTheFloor.Any(c => c.IsHandlingInProgress));
+        }
+
         await MoveEnemiesToTheNextFloor(floorIndex);
     }
 

@@ -20,7 +20,7 @@ public class IncAttackPower : StatusEffect
         Value = value;
     }
     
-    public override void Apply(Character character)
+    public override void Tick(Character character)
     {
         character.SetPowerBonus(Value);
         if (Value == 0)

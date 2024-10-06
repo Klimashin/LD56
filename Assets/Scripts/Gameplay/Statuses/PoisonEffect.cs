@@ -14,13 +14,15 @@ public class PoisonEffect : StatusEffectData
 public class Poison : StatusEffect
 {
     public int Value { get; private set; }
+    
+    public override string GetText() => $"P{Value.ToString()}";
 
     public Poison(int value)
     {
         Value = value;
     }
     
-    public override void Apply(Character character)
+    public override void Tick(Character character)
     {
         character.Damage(Value);
         Value--;

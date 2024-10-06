@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
 
+[CreateAssetMenu(menuName = "Abilities/Heal")]
 public class HealAbility : Ability
 {
     [SerializeField] private int _amount;

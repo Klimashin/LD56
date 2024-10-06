@@ -218,7 +218,7 @@ public class BattleController : MonoBehaviour, IEventsDispatcherClient
 
         foreach (var character in enemyCharactersToClean)
         {
-            _playerTeamLayout[character.LayoutPos] = null;
+            _enemyTeamLayout[character.LayoutPos] = null;
         }
     }
 

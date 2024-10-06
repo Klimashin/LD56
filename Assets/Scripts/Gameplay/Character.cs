@@ -10,16 +10,17 @@ public class Character : MonoBehaviour
     [SerializeField] private SpriteRenderer _sprite;
     
     private CharacterData _characterData;
-    private int _maxHp;
 
     public int MaxHp { get; private set; }
     public int Hp { get; private set; }
     public int AttackPower { get; private set; }
+    public bool Haste { get; private set; }
     public bool IsDead => Hp <= 0;
 
     public Action<Character> OnLethalDamage;
 
     public CharacterPosition LayoutPos { get; private set; }
+    public readonly List<StatusEffect> StatusEffects = new List<StatusEffect>();
 
     public void Initialize(CharacterData characterData, CharacterPosition layoutPos)
     {
@@ -47,6 +48,7 @@ public class Character : MonoBehaviour
         }
 
         Hp = Mathf.Min(MaxHp, Hp + amount);
+        UpdateDisplays();
     }
 
     private void UpdateDisplays()
@@ -88,7 +90,8 @@ public class Character : MonoBehaviour
 
     private async UniTaskVoid DeathRoutine()
     {
-        gameObject.SetActive(false);
+        await UniTask.Delay(TimeSpan.FromSeconds(0.5f), DelayType.DeltaTime, PlayerLoopTiming.Update, destroyCancellationToken);
+        Destroy(gameObject);
     }
 
     private async UniTask AttackAnimation()

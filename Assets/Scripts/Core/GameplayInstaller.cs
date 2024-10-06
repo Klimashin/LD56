@@ -1,3 +1,4 @@
+using Cinemachine;
 using Reflex.Core;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -9,7 +10,9 @@ public class GameplayInstaller : MonoBehaviour, IInstaller
     [SerializeField] private BattleUI _battleUI;
     [SerializeField] private CharactersDatabase _charactersDatabase;
     [SerializeField] private GameField _gameField;
-    [SerializeField] private BattleController _battleController; 
+    [SerializeField] private BattleController _battleController;
+    [SerializeField] private FloatingTextFactory _floatingTextFactory;
+    [SerializeField] private CinemachineVirtualCamera _cinemachineVirtualCamera;
     
     public void InstallBindings(ContainerBuilder containerBuilder)
     {
@@ -19,5 +22,7 @@ public class GameplayInstaller : MonoBehaviour, IInstaller
         containerBuilder.AddSingleton(_charactersDatabase);
         containerBuilder.AddSingleton(_gameField);
         containerBuilder.AddSingleton(_battleController);
+        containerBuilder.AddSingleton(_floatingTextFactory);
+        containerBuilder.AddSingleton(_cinemachineVirtualCamera);
     }
 }

@@ -8,6 +8,6 @@ public class AttackPowerDisplay : CharacterDataDisplay
     
     public override void UpdateDisplay(Character character)
     {
-        _attackPowerText.text = character.AttackPower.ToString();
+        _attackPowerText.text = character.Power.ToString();
     }
 }

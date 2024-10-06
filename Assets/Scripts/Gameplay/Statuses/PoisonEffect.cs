@@ -1,18 +1,37 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
-public class PoisonEffect : MonoBehaviour
+[CreateAssetMenu(menuName = "Statuses/Poison")]
+public class PoisonEffect : StatusEffectData
 {
-    // Start is called before the first frame update
-    void Start()
+    [SerializeField] private int value;
+    
+    public override StatusEffect Create()
     {
-        
+        return new Poison(value);
+    }
+}
+
+public class Poison : StatusEffect
+{
+    public int Value { get; private set; }
+
+    public Poison(int value)
+    {
+        Value = value;
+    }
+    
+    public override void Apply(Character character)
+    {
+        character.Damage(Value);
+        Value--;
+        if (Value == 0)
+        {
+            Expire();
+        }
     }
 
-    // Update is called once per frame
-    void Update()
+    public override void Merge(StatusEffect newEffect)
     {
-        
+        Value += (newEffect as Poison).Value;
     }
 }

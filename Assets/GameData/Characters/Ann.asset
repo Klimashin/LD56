@@ -12,8 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cc5c67797fa41ff4b9a03f4b0a02a85e, type: 3}
   m_Name: Ann
   m_EditorClassIdentifier: 
-  CharacterType: 2
   CharacterPrefab: {fileID: 3217989162714998004, guid: ab6b09d506b49e944878e39c28e5086b, type: 3}
   CharacterUiDraggablePrefab: {fileID: 6677052233607744750, guid: bf3467aaae626574791536f9a7777569, type: 3}
   Hp: 10
-  AttackPower: 8
+  Power: 8
+  MainAbility: {fileID: 11400000, guid: a0beba05b132c3142be27329d5d7f82a, type: 2}
+  OnDeathAbility: {fileID: 0}
+  OnFloorFightEndAbility: {fileID: 0}

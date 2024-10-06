@@ -12,8 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cc5c67797fa41ff4b9a03f4b0a02a85e, type: 3}
   m_Name: Monkey
   m_EditorClassIdentifier: 
-  CharacterType: 1
   CharacterPrefab: {fileID: 3217989162714998004, guid: 337033181e5cb774f98474ce3c1f382f, type: 3}
   CharacterUiDraggablePrefab: {fileID: 3306603312146089204, guid: cbd485538ca50c6438a7b7ecf5d02492, type: 3}
   Hp: 5
-  AttackPower: 7
+  Power: 7
+  MainAbility: {fileID: 11400000, guid: a0beba05b132c3142be27329d5d7f82a, type: 2}
+  OnDeathAbility: {fileID: 11400000, guid: 32f10e2c1f0974544b3c30acf21efaaf, type: 2}
+  OnFloorFightEndAbility: {fileID: 0}

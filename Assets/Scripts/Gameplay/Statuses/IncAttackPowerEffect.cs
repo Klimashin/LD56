@@ -1,18 +1,36 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
-public class IncAttackPowerEffect : MonoBehaviour
+[CreateAssetMenu(menuName = "Statuses/IncPower")]
+public class IncAttackPowerEffect : StatusEffectData
 {
-    // Start is called before the first frame update
-    void Start()
+    [SerializeField] private int value;
+    
+    public override StatusEffect Create()
     {
-        
+        return new IncAttackPower(value);
+    }
+}
+
+public class IncAttackPower : StatusEffect
+{
+    public int Value { get; private set; }
+
+    public IncAttackPower(int value)
+    {
+        Value = value;
+    }
+    
+    public override void Apply(Character character)
+    {
+        character.SetPowerBonus(Value);
+        if (Value == 0)
+        {
+            Expire();
+        }
     }
 
-    // Update is called once per frame
-    void Update()
+    public override void Merge(StatusEffect newEffect)
     {
-        
+        Value += (newEffect as IncAttackPower).Value;
     }
 }

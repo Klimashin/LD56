@@ -1,36 +1,52 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Cysharp.Threading.Tasks;
 using DG.Tweening;
+using Reflex.Attributes;
 using UnityEngine;
 
 public class Character : MonoBehaviour
 {
     [SerializeField] private CharacterDataDisplay[] _dataDisplays;
     [SerializeField] private SpriteRenderer _sprite;
+    [SerializeField] private float _floatingTextOffsetY = 1.5f;
     
     private CharacterData _characterData;
 
-    public int MaxHp { get; private set; }
+    public int MaxHp => _characterData.Hp + _bonusHp;
     public int Hp { get; private set; }
-    public int AttackPower { get; private set; }
+    public int Power => _characterData.Power + _powerBonus;
     public bool Haste { get; private set; }
     public bool IsDead => Hp <= 0;
 
     public Action<Character> OnLethalDamage;
 
     public CharacterPosition LayoutPos { get; private set; }
-    public readonly List<StatusEffect> StatusEffects = new List<StatusEffect>();
+    public readonly Dictionary<Type, StatusEffect> StatusEffects = new ();
+    public bool IsEnemy => LayoutPos.zoneType == ZoneType.Right;
+    public bool IsHandlingInProgress => _handlesHashSet.Count > 0;
+
+    private int _powerBonus = 0;
+    private int _bonusHp = 0;
+    private BattleController _battleController;
+    private FloatingTextFactory _floatingTextFactory;
+    private readonly HashSet<string> _handlesHashSet = new ();
+
+    [Inject]
+    private void Inject(BattleController battleController, FloatingTextFactory floatingTextFactory)
+    {
+        _battleController = battleController;
+        _floatingTextFactory = floatingTextFactory;
+    }
 
     public void Initialize(CharacterData characterData, CharacterPosition layoutPos)
     {
         _characterData = characterData;
         LayoutPos = layoutPos;
         _sprite.flipX = layoutPos.zoneType == ZoneType.Right;
-
-        MaxHp = _characterData.Hp;
+        
         Hp = MaxHp;
-        AttackPower = characterData.AttackPower;
 
         UpdateDisplays();
     }
@@ -47,6 +63,7 @@ public class Character : MonoBehaviour
             return;
         }
 
+        _floatingTextFactory.ShowFloatingText($"+{amount.ToString()}", transform.position + Vector3.up * _floatingTextOffsetY, FloatingTextFactory.FloatingTextType.Green);
         Hp = Mathf.Min(MaxHp, Hp + amount);
         UpdateDisplays();
     }
@@ -59,32 +76,83 @@ public class Character : MonoBehaviour
         }
     }
 
-    public async UniTask HandleAttack(List<Character> targets)
+    public async UniTask HandleMainAbility(List<Character> possibleTargets)
     {
-        for (int i = 0; i < targets.Count; i++)
-        {
-            var target = targets[i];
-            if (target.Hp <= 0)
-            {
-                continue;
-            }
+        _handlesHashSet.Add(nameof(HandleMainAbility));
+        
+        possibleTargets = possibleTargets.Where(t => !t.IsDead).ToList();
 
-            await AttackAnimation();
+        var mainAbility = _characterData.MainAbility;
+        var targets = mainAbility.SelectTargets(possibleTargets, this);
+            
+        await MainAbilityAnimation();
 
-            target.Damage(AttackPower);
+        await mainAbility.Apply(targets, this);
+        
+        _handlesHashSet.Remove(nameof(HandleMainAbility));
+    }
+    
+    public async UniTask HandleOnDeathAbility(List<Character> possibleTargets)
+    {
+        _handlesHashSet.Add(nameof(HandleOnDeathAbility));
+        
+        possibleTargets = possibleTargets.Where(t => !t.IsDead).ToList();
 
-            break;
-        }
+        var ability = _characterData.OnDeathAbility;
+        var targets = ability.SelectTargets(possibleTargets, this);
+
+        await ability.Apply(targets, this);
+        
+        _handlesHashSet.Remove(nameof(HandleOnDeathAbility));
+    }
+    
+    public async UniTask HandleOnFloorFightEndAbility(List<Character> possibleTargets)
+    {
+        _handlesHashSet.Add(nameof(HandleOnFloorFightEndAbility));
+        
+        possibleTargets = possibleTargets.Where(t => !t.IsDead).ToList();
+
+        var mainAbility = _characterData.MainAbility;
+        var targets = mainAbility.SelectTargets(possibleTargets, this);
+
+        await mainAbility.Apply(targets, this);
+        
+        _handlesHashSet.Remove(nameof(HandleOnFloorFightEndAbility));
     }
 
-    private void Damage(int damage)
+    public void Damage(int damage)
     {
+        if (IsDead)
+        {
+            return;
+        }
+        
         Hp = Mathf.Max(Hp - damage, 0);
+        _floatingTextFactory.ShowFloatingText($"-{damage.ToString()}", transform.position + Vector3.up * _floatingTextOffsetY, FloatingTextFactory.FloatingTextType.Red);
         UpdateDisplays();
         if (IsDead)
         {
             OnLethalDamage?.Invoke(this);
+            if (_characterData.OnDeathAbility != null)
+            {
+                HandleOnDeathAbility(_battleController.GetAllAliveCharactersOnTheFloor(LayoutPos.floorIndex)).Forget();
+            }
             DeathRoutine().Forget();
+        }
+    }
+
+    public void SetPowerBonus(int amount)
+    {
+        _powerBonus = amount;
+    }
+    
+    public void SetHpBonus(int amount)
+    {
+        var diff = amount - _bonusHp;
+        _bonusHp = amount;
+        if (diff > 0)
+        {
+            Heal(diff);
         }
     }
 
@@ -94,9 +162,31 @@ public class Character : MonoBehaviour
         Destroy(gameObject);
     }
 
-    private async UniTask AttackAnimation()
+    private async UniTask MainAbilityAnimation()
     {
         transform.DOPunchScale(new Vector3(0.1f, 0.1f, 0.1f), 0.4f, 1);
         await UniTask.Delay(TimeSpan.FromSeconds(0.5f), DelayType.DeltaTime, PlayerLoopTiming.Update, destroyCancellationToken);
+    }
+
+    public void ApplyStatusEffect(StatusEffect statusEffect)
+    {
+        var effectType = statusEffect.GetType();
+        if (StatusEffects.TryGetValue(effectType, out var existingEffect) && existingEffect != null)
+        {
+            existingEffect.Merge(statusEffect);
+        }
+        else
+        {
+            StatusEffects.Add(effectType, statusEffect);
+        }
+    }
+
+    public void ClearExpiredEffects()
+    {
+        var expiredEffectPairs = StatusEffects.Where(pair => pair.Value.IsExpired).ToList();
+        foreach (var expiredEffectPair in expiredEffectPairs)
+        {
+            StatusEffects.Remove(expiredEffectPair.Key);
+        }
     }
 }

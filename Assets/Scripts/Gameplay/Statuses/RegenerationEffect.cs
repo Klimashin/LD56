@@ -1,11 +1,11 @@
 using UnityEngine;
 
 [CreateAssetMenu(menuName = "Statuses/Regeneration")]
-public class RegenerationEffect : StatusEffect<Regeneration>
+public class RegenerationEffect : StatusEffectData
 {
     [SerializeField] private int value;
     
-    public override Regeneration Create()
+    public override StatusEffect Create()
     {
         return new Regeneration(value);
     }
@@ -23,5 +23,15 @@ public class Regeneration : StatusEffect
     public override void Apply(Character character)
     {
         character.Heal(Value);
+        Value--;
+        if (Value == 0)
+        {
+            Expire();
+        }
+    }
+
+    public override void Merge(StatusEffect newEffect)
+    {
+        Value += (newEffect as Regeneration).Value;
     }
 }

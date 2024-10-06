@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Cinemachine;
 using Cysharp.Threading.Tasks;
 using JetBrains.Annotations;
 using Reflex.Attributes;
@@ -15,11 +16,14 @@ public class BattleController : MonoBehaviour, IEventsDispatcherClient
     private BattleUI _battleUi;
     private GameField _gameField;
     private CharactersDatabase _charactersDatabase;
+    private CinemachineVirtualCamera _cinemachineVirtualCamera;
+    private CinemachineTrackedDolly _cameraDollyCart;
     private readonly Dictionary<CharacterPosition, Character> _playerTeamLayout = new ();
     private readonly Dictionary<CharacterPosition, Character> _enemyTeamLayout = new ();
     private bool _winConditionReached = false;
     private BattlePhase _currentBattlePhase = BattlePhase.Deploy;
     private int _currentWaveIndex = -1;
+    public int CurrentCameraWaypoint { get; private set; }
 
     public BattlePhase CurrentBattlePhase => _currentBattlePhase;
     public int CoreHp { get; private set; }
@@ -31,15 +35,19 @@ public class BattleController : MonoBehaviour, IEventsDispatcherClient
     }
 
     [Inject]
-    private void Inject(BattleUI battleUI, CharactersDatabase charactersDatabase, GameField gameField)
+    private void Inject(BattleUI battleUI, CharactersDatabase charactersDatabase, GameField gameField, CinemachineVirtualCamera virtualCamera)
     {
         _battleUi = battleUI;
         _charactersDatabase = charactersDatabase;
         _gameField = gameField;
+        _cinemachineVirtualCamera = virtualCamera;
+        _cameraDollyCart = _cinemachineVirtualCamera.GetCinemachineComponent<CinemachineTrackedDolly>();
     }
 
     private void Start()
     {
+        UpdateCameraPosition(0);
+        
         CoreHp = _coreBaseHp;
         
         _battleUi.onDeployFinishedClickedAction += () => { UpdateBattlePhase(BattlePhase.Fight); };
@@ -47,6 +55,12 @@ public class BattleController : MonoBehaviour, IEventsDispatcherClient
         InitializeWithTestData();
 
         BattleRoutine().Forget();
+    }
+
+    public void UpdateCameraPosition(int waypointIndex)
+    {
+        CurrentCameraWaypoint = waypointIndex;
+        _cameraDollyCart.m_PathPosition = CurrentCameraWaypoint;
     }
 
     private async UniTaskVoid BattleRoutine()
@@ -107,9 +121,18 @@ public class BattleController : MonoBehaviour, IEventsDispatcherClient
         var floorsCount = _gameField.Floors.Length;
         for (int floorIndex = floorsCount - 1; floorIndex >= 0; floorIndex--)
         {
+            if (GetAllAliveCharactersOnTheFloor(floorIndex).Count == 0)
+            {
+                continue;
+            }
+            
+            UpdateCameraPosition(floorIndex);
+            
+            await UniTask.Delay(TimeSpan.FromSeconds(1f), DelayType.DeltaTime, PlayerLoopTiming.Update, destroyCancellationToken);
+            
             await HandleFloorFight(floorIndex);
             
-            await UniTask.Delay(TimeSpan.FromSeconds(0.5f), DelayType.DeltaTime, PlayerLoopTiming.Update, destroyCancellationToken);
+            await UniTask.Delay(TimeSpan.FromSeconds(1f), DelayType.DeltaTime, PlayerLoopTiming.Update, destroyCancellationToken);
         }
 
         _currentWaveIndex++;
@@ -132,9 +155,17 @@ public class BattleController : MonoBehaviour, IEventsDispatcherClient
         
         // handle haste units
 
+        var charactersOnTheFloor = enemiesOnTheFloor.Concat(playerUnitsOnTheFloor).ToList();
         foreach (var character in enemiesOnTheFloor)
         {
-            await character.HandleAttack(playerUnitsOnTheFloor);
+            if (character.IsDead)
+            {
+                continue;
+            }
+            
+            await character.HandleMainAbility(charactersOnTheFloor);
+
+            await UniTask.WaitUntil(() => !charactersOnTheFloor.Any(c => c.IsHandlingInProgress));
         }
         
         foreach (var character in playerUnitsOnTheFloor)
@@ -144,7 +175,9 @@ public class BattleController : MonoBehaviour, IEventsDispatcherClient
                 continue;
             }
             
-            await character.HandleAttack(enemiesOnTheFloor);
+            await character.HandleMainAbility(charactersOnTheFloor);
+            
+            await UniTask.WaitUntil(() => !charactersOnTheFloor.Any(c => c.IsHandlingInProgress));
         }
 
         CleanUpFloor(floorIndex);
@@ -152,12 +185,23 @@ public class BattleController : MonoBehaviour, IEventsDispatcherClient
         await MoveEnemiesToTheNextFloor(floorIndex);
     }
 
-    private List<Character> GetCharactersOnTheFloor(int floorIndex, ZoneType side)
+    public List<Character> GetCharactersOnTheFloor(int floorIndex, ZoneType side)
     {
         var layout = side == ZoneType.Left ? _playerTeamLayout : _enemyTeamLayout;
         return layout.Values.Where(character => character != null && character.LayoutPos.floorIndex == floorIndex)
                 .OrderBy(character => character.LayoutPos.zoneIndex)
                 .ToList();
+    }
+    
+    public List<Character> GetAllAliveCharactersOnTheFloor(int floorIndex)
+    {
+        return _playerTeamLayout.Values.Concat(_enemyTeamLayout.Values)
+            .Where(
+                character => character != null 
+                             && !character.IsDead 
+                             && character.LayoutPos.floorIndex == floorIndex)
+            .OrderBy(character => character.LayoutPos.zoneIndex)
+            .ToList();
     }
 
     private async UniTask MoveEnemiesToTheNextFloor(int floorIndex)
@@ -193,9 +237,11 @@ public class BattleController : MonoBehaviour, IEventsDispatcherClient
 
     private async UniTask HandleCoreDamage(List<Character> charactersList)
     {
+        UpdateCameraPosition(_gameField.Floors.Length);
+        
         foreach (var character in charactersList)
         {
-            CoreHp -= character.AttackPower;
+            CoreHp -= character.Power;
             _enemyTeamLayout[character.LayoutPos] = null;
             Destroy(character.gameObject);
         }

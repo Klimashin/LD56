@@ -1,8 +1,9 @@
 using UnityEngine;
 
-public abstract class StatusEffect<T> : ScriptableObject where T : StatusEffect
+public abstract class StatusEffectData : ScriptableObject
 {
-    public abstract T Create();
+    [SerializeField] public StatusEffectTrigger TickTrigger = StatusEffectTrigger.None;
+    public abstract StatusEffect Create();
 }
 
 public enum StatusEffectTrigger
@@ -13,5 +14,14 @@ public enum StatusEffectTrigger
 
 public abstract class StatusEffect
 {
+    public bool IsExpired { get; private set; }
+
     public abstract void Apply(Character character);
+    
+    public abstract void Merge(StatusEffect newEffect);
+
+    public void Expire()
+    {
+        IsExpired = true;
+    }
 }

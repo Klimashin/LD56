@@ -13,13 +13,15 @@ public class BattleUI : MonoBehaviour
     [SerializeField] private TextMeshProUGUI _coreHpText;
 
     private BattleController _battleController;
+    private Camera _camera;
     
     public Action onDeployFinishedClickedAction;
 
     [Inject]
-    private void Inject(BattleController battleController)
+    private void Inject(BattleController battleController, Camera camera)
     {
         _battleController = battleController;
+        _camera = camera;
     }
 
     private void Start()

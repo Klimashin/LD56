@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Cysharp.Threading.Tasks;
 using UnityEngine;
 
 public abstract class Ability : ScriptableObject
@@ -88,5 +87,5 @@ public abstract class Ability : ScriptableObject
         }
     }
     
-    public abstract UniTask Apply(List<Character> targets, Character self);
+    public abstract void Apply(List<Character> targets, Character self);
 }

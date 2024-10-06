@@ -11,17 +11,16 @@ public class BattleUI : MonoBehaviour
     [SerializeField] private GameObject _toyBox;
     [SerializeField] private Button _deployFinishedButton;
     [SerializeField] private TextMeshProUGUI _coreHpText;
+    [SerializeField] private TextMeshProUGUI _manaPointsText;
 
     private BattleController _battleController;
-    private Camera _camera;
-    
+
     public Action onDeployFinishedClickedAction;
 
     [Inject]
-    private void Inject(BattleController battleController, Camera camera)
+    private void Inject(BattleController battleController)
     {
         _battleController = battleController;
-        _camera = camera;
     }
 
     private void Start()
@@ -34,6 +33,7 @@ public class BattleUI : MonoBehaviour
         _toyBox.gameObject.SetActive(_battleController.CurrentBattlePhase == BattleController.BattlePhase.Deploy);
         _deployFinishedButton.gameObject.SetActive(_battleController.CurrentBattlePhase == BattleController.BattlePhase.Deploy);
         _coreHpText.text = _battleController.CoreHp.ToString();
+        _manaPointsText.text = _battleController.ManaPoints.ToString();
     }
 
     private void OnDeployFinished()

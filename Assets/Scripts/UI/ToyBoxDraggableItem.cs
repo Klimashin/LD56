@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using Reflex.Attributes;
+using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
@@ -7,6 +8,7 @@ using UnityEngine.UI;
 public class ToyBoxDraggableItem : MonoBehaviour, IBeginDragHandler, IEndDragHandler, IDragHandler
 {
     [SerializeField] private Image raycastTarget;
+    [SerializeField] private TextMeshProUGUI _costText;
     
     private Vector3 _initialPos;
     private Physics2DRaycaster _physics2DRaycaster;
@@ -27,10 +29,16 @@ public class ToyBoxDraggableItem : MonoBehaviour, IBeginDragHandler, IEndDragHan
     public void SetCharacterData(CharacterData characterData)
     {
         _characterData = characterData;
+        _costText.text = characterData.Cost.ToString();
     }
     
     public void OnBeginDrag(PointerEventData eventData)
     {
+        if (_battleController.ManaPoints < _characterData.Cost)
+        {
+            return;
+        }
+
         _initialPos = transform.position;
         raycastTarget.raycastTarget = false;
         GetComponent<LayoutElement>().ignoreLayout = true;
@@ -39,6 +47,11 @@ public class ToyBoxDraggableItem : MonoBehaviour, IBeginDragHandler, IEndDragHan
 
     public void OnEndDrag(PointerEventData eventData)
     {
+        if (_battleController.ManaPoints < _characterData.Cost)
+        {
+            return;
+        }
+        
         _fieldPlaceholdersController.StopHighlightingFreePlayerZones();
         GetComponent<LayoutElement>().ignoreLayout = false;
         raycastTarget.raycastTarget = true;
@@ -65,6 +78,11 @@ public class ToyBoxDraggableItem : MonoBehaviour, IBeginDragHandler, IEndDragHan
 
     public void OnDrag(PointerEventData eventData)
     {
+        if (_battleController.ManaPoints < _characterData.Cost)
+        {
+            return;
+        }
+        
         transform.position = eventData.position;
         
         _raycastResults.Clear();

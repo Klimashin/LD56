@@ -12,18 +12,22 @@ public class BattleController : MonoBehaviour, IEventsDispatcherClient
     [SerializeField] private List<string> _availableCharacters;
     [SerializeField] private List<WaveConfig> _enemiesWaves;
     [SerializeField] private int _coreBaseHp = 15;
+    [SerializeField] private int _manaPoints = 3;
+    [SerializeField] private AudioClip _bgMusic;
 
     private BattleUI _battleUi;
     private GameField _gameField;
     private CharactersDatabase _charactersDatabase;
     private CinemachineVirtualCamera _cinemachineVirtualCamera;
     private CinemachineTrackedDolly _cameraDollyCart;
+    private SoundSystem _soundSystem;
     private readonly Dictionary<CharacterPosition, Character> _playerTeamLayout = new ();
     private readonly Dictionary<CharacterPosition, Character> _enemyTeamLayout = new ();
     private bool _winConditionReached = false;
     private BattlePhase _currentBattlePhase = BattlePhase.Deploy;
     private int _currentWaveIndex = -1;
     public int CurrentCameraWaypoint { get; private set; }
+    public int ManaPoints { get; private set; }
 
     public BattlePhase CurrentBattlePhase => _currentBattlePhase;
     public int CoreHp { get; private set; }
@@ -33,25 +37,30 @@ public class BattleController : MonoBehaviour, IEventsDispatcherClient
         Deploy,
         Fight
     }
+    
+    private float _standardDelay = 0.5f;
 
     [Inject]
-    private void Inject(BattleUI battleUI, CharactersDatabase charactersDatabase, GameField gameField, CinemachineVirtualCamera virtualCamera)
+    private void Inject(BattleUI battleUI, CharactersDatabase charactersDatabase, GameField gameField, CinemachineVirtualCamera virtualCamera, SoundSystem soundSystem)
     {
         _battleUi = battleUI;
         _charactersDatabase = charactersDatabase;
         _gameField = gameField;
         _cinemachineVirtualCamera = virtualCamera;
         _cameraDollyCart = _cinemachineVirtualCamera.GetCinemachineComponent<CinemachineTrackedDolly>();
+        _soundSystem = soundSystem;
     }
 
     private void Start()
     {
+        _soundSystem.PlayMusicClip(_bgMusic);
+        
         InitializeTeamLayouts();
         
         UpdateCameraPosition(0);
         
         CoreHp = _coreBaseHp;
-        
+
         _battleUi.onDeployFinishedClickedAction += () => { UpdateBattlePhase(BattlePhase.Fight); };
         
         InitializeWithTestData();
@@ -92,6 +101,8 @@ public class BattleController : MonoBehaviour, IEventsDispatcherClient
         
         while (!_winConditionReached)
         {
+            ManaPoints = _manaPoints;
+            
             await UniTask.WaitUntil(ShouldProceedToFightPhase, PlayerLoopTiming.Update, destroyCancellationToken);
             
             await FightPhaseRoutine();
@@ -158,7 +169,7 @@ public class BattleController : MonoBehaviour, IEventsDispatcherClient
             await SpawnWave(wave);
         }
     }
-
+    
     private async UniTask HandleFloorFight(int floorIndex)
     {
         var enemiesOnTheFloor = GetCharactersOnTheFloor(floorIndex, ZoneType.Right);
@@ -182,6 +193,8 @@ public class BattleController : MonoBehaviour, IEventsDispatcherClient
             await character.HandleMainAbility(charactersOnTheFloor);
 
             await UniTask.WaitUntil(() => !charactersOnTheFloor.Any(c => c.IsHandlingInProgress));
+            
+            await UniTask.Delay(TimeSpan.FromSeconds(_standardDelay), DelayType.DeltaTime, PlayerLoopTiming.Update, destroyCancellationToken);
         }
         
         foreach (var character in playerUnitsOnTheFloor)
@@ -194,6 +207,8 @@ public class BattleController : MonoBehaviour, IEventsDispatcherClient
             await character.HandleMainAbility(charactersOnTheFloor);
             
             await UniTask.WaitUntil(() => !charactersOnTheFloor.Any(c => c.IsHandlingInProgress));
+            
+            await UniTask.Delay(TimeSpan.FromSeconds(_standardDelay), DelayType.DeltaTime, PlayerLoopTiming.Update, destroyCancellationToken);
         }
 
         CleanUpFloor(floorIndex);
@@ -205,6 +220,8 @@ public class BattleController : MonoBehaviour, IEventsDispatcherClient
             
             await UniTask.WaitUntil(() => !charactersOnTheFloor.Any(c => c.IsHandlingInProgress));
         }
+        
+        await UniTask.Delay(TimeSpan.FromSeconds(_standardDelay), DelayType.DeltaTime, PlayerLoopTiming.Update, destroyCancellationToken);
 
         await MoveEnemiesToTheNextFloor(floorIndex);
     }
@@ -242,6 +259,8 @@ public class BattleController : MonoBehaviour, IEventsDispatcherClient
         }
         else
         {
+            await UniTask.Delay(TimeSpan.FromSeconds(_standardDelay), DelayType.DeltaTime, PlayerLoopTiming.Update, destroyCancellationToken);
+            
             foreach (var character in enemiesOnTheFloor)
             {
                 var currentPos = character.LayoutPos;
@@ -256,6 +275,8 @@ public class BattleController : MonoBehaviour, IEventsDispatcherClient
 
                 _enemyTeamLayout[currentPos] = character;
             }
+            
+            await UniTask.Delay(TimeSpan.FromSeconds(_standardDelay), DelayType.DeltaTime, PlayerLoopTiming.Update, destroyCancellationToken);
         }
     }
 
@@ -327,7 +348,7 @@ public class BattleController : MonoBehaviour, IEventsDispatcherClient
 
     public bool PlacePlayerCharacter(CharacterData characterData, ZoneHitData zoneHitData)
     {
-        if (!zoneHitData.zoneHit || zoneHitData.zoneType != ZoneType.Left || GetSlotCharacter(zoneHitData) != null)
+        if (!zoneHitData.zoneHit || zoneHitData.zoneType != ZoneType.Left || GetSlotCharacter(zoneHitData) != null || characterData.Cost > ManaPoints)
         {
             return false;
         }
@@ -338,6 +359,8 @@ public class BattleController : MonoBehaviour, IEventsDispatcherClient
         character.transform.position = _gameField.GetSlotPosition(pos);
 
         _playerTeamLayout[pos] = character;
+
+        ManaPoints -= characterData.Cost;
 
         return true;
     }

@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using Cysharp.Threading.Tasks;
 using Sirenix.OdinInspector;
 using UnityEngine;
 
@@ -9,7 +8,7 @@ public class DamageAbility : Ability
     [SerializeField] private bool _usePower = true;
     [SerializeField, HideIf("_usePower")] private int _amount;
     
-    public async override UniTask Apply(List<Character> targets, Character self)
+    public override void Apply(List<Character> targets, Character self)
     {
         foreach (var character in targets)
         {

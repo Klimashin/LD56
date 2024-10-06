@@ -87,7 +87,7 @@ public class Character : MonoBehaviour
             
         await MainAbilityAnimation();
 
-        await mainAbility.Apply(targets, this);
+        mainAbility.Apply(targets, this);
         
         _handlesHashSet.Remove(nameof(HandleMainAbility));
     }
@@ -101,7 +101,7 @@ public class Character : MonoBehaviour
         var ability = _characterData.OnDeathAbility;
         var targets = ability.SelectTargets(possibleTargets, this);
 
-        await ability.Apply(targets, this);
+        ability.Apply(targets, this);
         
         _handlesHashSet.Remove(nameof(HandleOnDeathAbility));
     }
@@ -117,7 +117,7 @@ public class Character : MonoBehaviour
         {
             var targets = ability.SelectTargets(possibleTargets, this);
 
-            await ability.Apply(targets, this);
+            ability.Apply(targets, this);
         }
         
         StatusEffectsTick();
@@ -125,7 +125,7 @@ public class Character : MonoBehaviour
         _handlesHashSet.Remove(nameof(HandleOnFloorFightEndAbility));
     }
 
-    public void StatusEffectsTick()
+    private void StatusEffectsTick()
     {
         foreach (var keyValuePair in StatusEffects)
         {
@@ -137,6 +137,8 @@ public class Character : MonoBehaviour
 
             statusEffect.Tick(this);
         }
+        
+        UpdateDisplays();
     }
 
     public void Damage(int damage)

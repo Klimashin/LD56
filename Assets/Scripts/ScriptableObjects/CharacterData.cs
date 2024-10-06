@@ -7,6 +7,7 @@ public class CharacterData : ScriptableObject
     [SerializeField] public ToyBoxDraggableItem CharacterUiDraggablePrefab;
     [SerializeField] public int Hp;
     [SerializeField] public int Power;
+    [SerializeField] public int Cost = 1;
     [SerializeField] public Ability MainAbility;
     [SerializeField] public Ability OnDeathAbility;
     [SerializeField] public Ability OnFloorFightEndAbility;

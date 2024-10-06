@@ -439,12 +439,26 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c85cefedf22590f47a7731256d56b3d4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _availableCharacters: 000000000000000002000000010000000100000002000000
+  _availableCharacters:
+  - ann
+  - ann
+  - teddy
+  - teddy
+  - monkey
+  - monkey
   _enemiesWaves:
-  - Wave: 0000000000000000
-  - Wave: 010000000100000000000000
-  - Wave: 0100000000000000
-  - Wave: 02000000
+  - Wave:
+    - teddy
+    - teddy
+  - Wave:
+    - teddy
+    - monkey
+    - monkey
+  - Wave:
+    - ann
+    - teddy
+  - Wave:
+    - ann
   _coreBaseHp: 15
 --- !u!1 &303920770
 GameObject:

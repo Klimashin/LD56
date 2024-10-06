@@ -13,8 +13,11 @@ MonoBehaviour:
   m_Name: CharactersDatabase
   m_EditorClassIdentifier: 
   Values:
-    _keyData: 000000000100000002000000
+    _keyData:
+    - ann
+    - teddy
+    - monkey
     _valueData:
+    - {fileID: 11400000, guid: dba0296151a394c4ea358b28739508ae, type: 2}
     - {fileID: 11400000, guid: 7ada63c0ea054aa47b6495784e9eccbe, type: 2}
     - {fileID: 11400000, guid: bdaa134ef62a6824984532c88ae57424, type: 2}
-    - {fileID: 11400000, guid: dba0296151a394c4ea358b28739508ae, type: 2}

@@ -10,7 +10,9 @@ public class Character : MonoBehaviour
     [SerializeField] private SpriteRenderer _sprite;
     
     private CharacterData _characterData;
+    private int _maxHp;
 
+    public int MaxHp { get; private set; }
     public int Hp { get; private set; }
     public int AttackPower { get; private set; }
     public bool IsDead => Hp <= 0;
@@ -25,7 +27,8 @@ public class Character : MonoBehaviour
         LayoutPos = layoutPos;
         _sprite.flipX = layoutPos.zoneType == ZoneType.Right;
 
-        Hp = characterData.Hp;
+        MaxHp = _characterData.Hp;
+        Hp = MaxHp;
         AttackPower = characterData.AttackPower;
 
         UpdateDisplays();
@@ -34,6 +37,16 @@ public class Character : MonoBehaviour
     public void SetLayoutPos(CharacterPosition position)
     {
         LayoutPos = position;
+    }
+
+    public void Heal(int amount)
+    {
+        if (IsDead)
+        {
+            return;
+        }
+
+        Hp = Mathf.Min(MaxHp, Hp + amount);
     }
 
     private void UpdateDisplays()
@@ -83,11 +96,4 @@ public class Character : MonoBehaviour
         transform.DOPunchScale(new Vector3(0.1f, 0.1f, 0.1f), 0.4f, 1);
         await UniTask.Delay(TimeSpan.FromSeconds(0.5f), DelayType.DeltaTime, PlayerLoopTiming.Update, destroyCancellationToken);
     }
-}
-
-public enum CharacterType
-{
-    TeddyBear,
-    Monkey,
-    Ann
 }

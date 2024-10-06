@@ -9,4 +9,4 @@ public class CharactersDatabase : ScriptableObject
 }
 
 [Serializable]
-public class CharactersDictionary : UnitySerializedDictionary<CharacterType, CharacterData> { }
+public class CharactersDictionary : UnitySerializedDictionary<string, CharacterData> { }

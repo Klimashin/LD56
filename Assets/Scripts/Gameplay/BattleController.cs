@@ -8,7 +8,7 @@ using UnityEngine;
 
 public class BattleController : MonoBehaviour, IEventsDispatcherClient
 {
-    [SerializeField] private List<CharacterType> _availableCharacters;
+    [SerializeField] private List<string> _availableCharacters;
     [SerializeField] private List<WaveConfig> _enemiesWaves;
     [SerializeField] private int _coreBaseHp = 15;
 
@@ -291,7 +291,7 @@ public class BattleController : MonoBehaviour, IEventsDispatcherClient
 [Serializable]
 public class WaveConfig
 {
-    public List<CharacterType> Wave;
+    public List<string> Wave;
 }
 
 public struct CharacterPosition

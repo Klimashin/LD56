@@ -11,15 +11,17 @@ public class ToyBoxDraggableItem : MonoBehaviour, IBeginDragHandler, IEndDragHan
     private Vector3 _initialPos;
     private Physics2DRaycaster _physics2DRaycaster;
     private BattleController _battleController;
+    private FieldPlaceholdersController _fieldPlaceholdersController;
     private CharacterData _characterData;
 
     private readonly List<RaycastResult> _raycastResults = new ();
 
     [Inject]
-    private void Inject(Physics2DRaycaster physics2DRaycaster, BattleController battleController)
+    private void Inject(Physics2DRaycaster physics2DRaycaster, BattleController battleController, FieldPlaceholdersController fieldPlaceholdersController)
     {
         _physics2DRaycaster = physics2DRaycaster;
         _battleController = battleController;
+        _fieldPlaceholdersController = fieldPlaceholdersController;
     }
 
     public void SetCharacterData(CharacterData characterData)
@@ -32,10 +34,12 @@ public class ToyBoxDraggableItem : MonoBehaviour, IBeginDragHandler, IEndDragHan
         _initialPos = transform.position;
         raycastTarget.raycastTarget = false;
         GetComponent<LayoutElement>().ignoreLayout = true;
+        _fieldPlaceholdersController.StartHighlightingFreePlayerZones();
     }
 
     public void OnEndDrag(PointerEventData eventData)
     {
+        _fieldPlaceholdersController.StopHighlightingFreePlayerZones();
         GetComponent<LayoutElement>().ignoreLayout = false;
         raycastTarget.raycastTarget = true;
         

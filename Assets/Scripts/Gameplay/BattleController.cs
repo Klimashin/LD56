@@ -46,6 +46,8 @@ public class BattleController : MonoBehaviour, IEventsDispatcherClient
 
     private void Start()
     {
+        InitializeTeamLayouts();
+        
         UpdateCameraPosition(0);
         
         CoreHp = _coreBaseHp;
@@ -57,10 +59,29 @@ public class BattleController : MonoBehaviour, IEventsDispatcherClient
         BattleRoutine().Forget();
     }
 
+    private void InitializeTeamLayouts()
+    {
+        for (var floorIndex = 0; floorIndex < _gameField.Floors.Length; floorIndex++)
+        {
+            for (var slotIndex = 0; slotIndex < Floor.FLOOR_SLOTS_COUNT; slotIndex++)
+            {
+                var positionLeft = new CharacterPosition(floorIndex, slotIndex, ZoneType.Left);
+                var positionRight = new CharacterPosition(floorIndex, slotIndex, ZoneType.Right);
+                _playerTeamLayout.Add(positionLeft, null);
+                _enemyTeamLayout.Add(positionRight, null);
+            }
+        }
+    }
+
     public void UpdateCameraPosition(int waypointIndex)
     {
         CurrentCameraWaypoint = waypointIndex;
         _cameraDollyCart.m_PathPosition = CurrentCameraWaypoint;
+    }
+
+    public List<CharacterPosition> GetFreePlayerZones()
+    {
+        return _playerTeamLayout.Where(pair => pair.Value == null).Select(pair => pair.Key).ToList();
     }
 
     private async UniTaskVoid BattleRoutine()
@@ -105,11 +126,6 @@ public class BattleController : MonoBehaviour, IEventsDispatcherClient
             var pos = new CharacterPosition(0, slotIndex, ZoneType.Right);
             character.Initialize(characterData, pos);
             character.transform.position = _gameField.GetSlotPosition(pos);
-            if (!_enemyTeamLayout.ContainsKey(pos))
-            {
-                _enemyTeamLayout.Add(pos, null);
-            }
-
             _enemyTeamLayout[pos] = character;
             
             slotIndex++;
@@ -320,11 +336,6 @@ public class BattleController : MonoBehaviour, IEventsDispatcherClient
         var pos = new CharacterPosition(zoneHitData);
         character.Initialize(characterData, pos);
         character.transform.position = _gameField.GetSlotPosition(pos);
-
-        if (!_playerTeamLayout.ContainsKey(pos))
-        {
-            _playerTeamLayout.Add(pos, null);
-        }
 
         _playerTeamLayout[pos] = character;
 

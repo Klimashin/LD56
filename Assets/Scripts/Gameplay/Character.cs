@@ -161,6 +161,7 @@ public class Character : MonoBehaviour
         Hp = Mathf.Max(Hp - damage, 0);
         _floatingTextFactory.ShowFloatingText($"-{damage.ToString()}", transform.position + Vector3.up * _floatingTextOffsetY, FloatingTextFactory.FloatingTextType.Red);
         UpdateDisplays();
+        _sprite.transform.DOShakePosition(0.3f, Vector3.one * 0.5f, 10);
         if (IsDead)
         {
             OnLethalDamage?.Invoke(this);
@@ -200,6 +201,7 @@ public class Character : MonoBehaviour
         _sprite.sortingOrder++;
         animationSeq
             .Append(transform.DOMoveX(transform.position.x + (IsEnemy ? -2f : 2f), BattleController.STANDARD_DELAY / 2f))
+            .Join(transform.DORotate(IsEnemy ? new Vector3(0f, 0f, 20f) : new Vector3(0f, 0f, -20f), BattleController.STANDARD_DELAY / 2f))
             .OnComplete(() =>
             {
                 animationSeq

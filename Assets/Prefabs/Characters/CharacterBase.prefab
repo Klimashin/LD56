@@ -494,7 +494,7 @@ MonoBehaviour:
   - {fileID: 386295445382376023}
   - {fileID: 2800646102040887549}
   _sprite: {fileID: 5556769633780039811}
-  _floatingTextOffsetY: 1.5
+  _floatingTextOffsetY: 2.5
 --- !u!114 &5630273373176331263
 MonoBehaviour:
   m_ObjectHideFlags: 0

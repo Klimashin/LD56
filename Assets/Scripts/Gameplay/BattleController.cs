@@ -171,7 +171,7 @@ public class BattleController : MonoBehaviour, IEventsDispatcherClient
             if (_gameplayPersistentData.currentStage == GameSettings.MAX_STAGE_INDEX)
             {
                 await UniTask.Delay(TimeSpan.FromSeconds(STANDARD_DELAY) * 2, DelayType.DeltaTime, PlayerLoopTiming.Update, destroyCancellationToken);
-                SceneManager.LoadScene(5);
+                SceneManager.LoadScene(4);
             }
             else
             {
@@ -184,7 +184,7 @@ public class BattleController : MonoBehaviour, IEventsDispatcherClient
         else
         {
             await UniTask.Delay(TimeSpan.FromSeconds(STANDARD_DELAY) * 2, DelayType.DeltaTime, PlayerLoopTiming.Update, destroyCancellationToken);
-            SceneManager.LoadScene(4);
+            SceneManager.LoadScene(3);
         }
     }
 

@@ -6,6 +6,7 @@ using UnityEngine.SceneManagement;
 public class IntermediateScreen : MonoBehaviour
 {
     [SerializeField] private StageImage[] stageImages;
+    [SerializeField] private float minLoadTime = 2f;
 
     private GameplayPersistentData _gameplayPersistentData;
 
@@ -30,6 +31,7 @@ public class IntermediateScreen : MonoBehaviour
             stageImages[i].Initialize(isSelected, isCompleted);
         }
 
+        float loadTime = 0;
         AsyncOperation asyncLoad = SceneManager.LoadSceneAsync(2);
         
         asyncLoad.allowSceneActivation = false;
@@ -38,11 +40,12 @@ public class IntermediateScreen : MonoBehaviour
         {
             //scene has loaded as much as possible,
             // the last 10% can't be multi-threaded
-            if (asyncLoad.progress >= 0.9f)
+            if (asyncLoad.progress >= 0.9f && loadTime >= minLoadTime)
             {
                 asyncLoad.allowSceneActivation = true;
             }
 
+            loadTime += Time.unscaledDeltaTime;
             await UniTask.DelayFrame(1);
         }
     }

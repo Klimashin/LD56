@@ -28,7 +28,7 @@ public class GameplayInstaller : MonoBehaviour, IInstaller
         containerBuilder.AddSingleton(_floatingTextFactory);
         containerBuilder.AddSingleton(_cinemachineVirtualCamera);
         containerBuilder.AddSingleton(_fieldPlaceholdersController);
-        containerBuilder.AddSingleton(_upgradeUI);
-        containerBuilder.AddSingleton(_hintUi);
+        containerBuilder.AddSingleton(_upgradeUI); 
+        //containerBuilder.AddSingleton(_hintUi);
     }
 }

@@ -570,6 +570,7 @@ GameObject:
   - component: {fileID: 938802757}
   - component: {fileID: 938802756}
   - component: {fileID: 938802755}
+  - component: {fileID: 938802759}
   m_Layer: 5
   m_Name: AuthorsScreenCanvas
   m_TagString: Untagged
@@ -662,6 +663,19 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 0}
+--- !u!114 &938802759
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 938802754}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e82aedfff7f44eb47bfe47b40f014250, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _BgMusic: {fileID: 8300000, guid: 38d74856021ed3d4db8aa8cc7c6b3b6e, type: 3}
 --- !u!1 &1114651487
 GameObject:
   m_ObjectHideFlags: 0

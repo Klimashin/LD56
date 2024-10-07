@@ -14,6 +14,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   UpgradeSlotUi: {fileID: 5969361794368083513, guid: 648c6eef6df97cd449c201432f5e19b8, type: 3}
   CharactersInPackage:
-  - pinata-green
   - nut
   - pinata-red

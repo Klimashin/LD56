@@ -75,81 +75,6 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
---- !u!1 &3225779260973788661
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 7062949203999100557}
-  - component: {fileID: 5484547181909626729}
-  - component: {fileID: 4918887715870540467}
-  m_Layer: 5
-  m_Name: Image (1)
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!224 &7062949203999100557
-RectTransform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3225779260973788661}
-  m_LocalRotation: {x: -0, y: -0, z: -0.22601229, w: 0.9741245}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 8242422160372267123}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: -26.125}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 71.7, y: -17.2}
-  m_SizeDelta: {x: 157.0065, y: 161.8928}
-  m_Pivot: {x: 0.5, y: 0.5}
---- !u!222 &5484547181909626729
-CanvasRenderer:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3225779260973788661}
-  m_CullTransparentMesh: 1
---- !u!114 &4918887715870540467
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3225779260973788661}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_RaycastTarget: 1
-  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
-  m_Maskable: 1
-  m_OnCullStateChanged:
-    m_PersistentCalls:
-      m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: c920bfcd395cf9c42b29211086678ea1, type: 3}
-  m_Type: 0
-  m_PreserveAspect: 1
-  m_FillCenter: 1
-  m_FillMethod: 4
-  m_FillAmount: 1
-  m_FillClockwise: 1
-  m_FillOrigin: 0
-  m_UseSpriteMesh: 0
-  m_PixelsPerUnitMultiplier: 1
 --- !u!1 &3896950272998942017
 GameObject:
   m_ObjectHideFlags: 0
@@ -239,7 +164,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6293587030946188676, guid: c9e755de24e39ff428a98ea2fadeccc7, type: 3}
       propertyPath: m_text
-      value: Heavy chariot Pack
+      value: Heavy poison Pack
       objectReference: {fileID: 0}
     - target: {fileID: 6293587030946188676, guid: c9e755de24e39ff428a98ea2fadeccc7, type: 3}
       propertyPath: m_fontSize
@@ -338,9 +263,6 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 3910548043661993987, guid: c9e755de24e39ff428a98ea2fadeccc7, type: 3}
       insertIndex: -1
       addedObject: {fileID: 940587185156295777}
-    - targetCorrespondingSourceObject: {fileID: 3910548043661993987, guid: c9e755de24e39ff428a98ea2fadeccc7, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 7062949203999100557}
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c9e755de24e39ff428a98ea2fadeccc7, type: 3}
 --- !u!224 &8242422160372267123 stripped

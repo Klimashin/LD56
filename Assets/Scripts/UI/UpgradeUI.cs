@@ -36,7 +36,7 @@ public class UpgradeUI : MonoBehaviour
         _gameplayPersistentData.charactersPool.AddRange(package.CharactersInPackage);
         if (_gameplayPersistentData.currentStage < GameSettings.MAX_STAGE_INDEX)
         {
-            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+            SceneManager.LoadScene(1);
         }
         else
         {

@@ -655,7 +655,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b10a3183fc9ef97469ff5358b1fe859c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _menuBgMusic: {fileID: 8300000, guid: 1ab6cdee46786a645b7641f2652130da, type: 3}
+  _menuBgMusic: {fileID: 8300000, guid: 8d5bb667f722234429ccaac912cf8c92, type: 3}
 --- !u!1 &1822407232
 GameObject:
   m_ObjectHideFlags: 0

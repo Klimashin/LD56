@@ -34,13 +34,6 @@ public class UpgradeUI : MonoBehaviour
     private void OnPackageSelected(UpgradePackageConfig package)
     {
         _gameplayPersistentData.charactersPool.AddRange(package.CharactersInPackage);
-        if (_gameplayPersistentData.currentStage < GameSettings.MAX_STAGE_INDEX)
-        {
-            SceneManager.LoadScene(1);
-        }
-        else
-        {
-            Debug.LogError("Upgrade UI is shown after final stage already finished!");
-        }
+        SceneManager.LoadScene(1);
     }
 }

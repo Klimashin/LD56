@@ -17,6 +17,6 @@ MonoBehaviour:
   Hp: 3
   Power: 5
   Cost: 1
-  MainAbility: {fileID: 11400000, guid: a0beba05b132c3142be27329d5d7f82a, type: 2}
+  MainAbility: {fileID: 11400000, guid: 32f10e2c1f0974544b3c30acf21efaaf, type: 2}
   OnDeathAbility: {fileID: 0}
   OnFloorFightEndAbility: {fileID: 0}

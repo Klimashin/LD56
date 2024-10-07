@@ -14,9 +14,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   CharacterPrefab: {fileID: 3217989162714998004, guid: 757c6680026dd744f81433fef22e62cb, type: 3}
   CharacterUiDraggablePrefab: {fileID: 6677052233607744750, guid: ca354ce61fbe74d4ba54d70506ea185a, type: 3}
-  Hp: 15
-  Power: 7
+  Hp: 5
+  Power: 3
   Cost: 2
-  MainAbility: {fileID: 11400000, guid: a0beba05b132c3142be27329d5d7f82a, type: 2}
+  MainAbility: {fileID: 11400000, guid: 32f10e2c1f0974544b3c30acf21efaaf, type: 2}
   OnDeathAbility: {fileID: 0}
   OnFloorFightEndAbility: {fileID: 0}

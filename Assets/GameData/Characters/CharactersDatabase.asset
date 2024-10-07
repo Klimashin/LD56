@@ -22,6 +22,13 @@ MonoBehaviour:
     - pinata-green
     - pinata-red
     - nut
+    - officer b
+    - officer r
+    - soldier b
+    - soldier r
+    - rocketman
+    - rocketman b
+    - rocketman r
     _valueData:
     - {fileID: 11400000, guid: dba0296151a394c4ea358b28739508ae, type: 2}
     - {fileID: 11400000, guid: 7ada63c0ea054aa47b6495784e9eccbe, type: 2}
@@ -31,3 +38,10 @@ MonoBehaviour:
     - {fileID: 11400000, guid: 2651fa1fc57baf94fb5169bd5643d899, type: 2}
     - {fileID: 11400000, guid: 9ba771c7eae007749886050aeef09b8c, type: 2}
     - {fileID: 11400000, guid: 026edd686f70f0e49af7d548b74821ed, type: 2}
+    - {fileID: 11400000, guid: b7f6d8da17f33da4cbfffcac28b5cb1d, type: 2}
+    - {fileID: 11400000, guid: d4206e7c19dd99248a044a83ba1930e9, type: 2}
+    - {fileID: 11400000, guid: f767782b9d8e12648858e73391a20419, type: 2}
+    - {fileID: 11400000, guid: 242366fac08d2034992c262ce8f79b2a, type: 2}
+    - {fileID: 11400000, guid: 9a186689b3f1c0d4999dd5224b2c2126, type: 2}
+    - {fileID: 11400000, guid: 95fdf8be73c53c14d8ebff3fea5a94fe, type: 2}
+    - {fileID: 11400000, guid: a07ae0733704aee409d42bbc6da5844c, type: 2}

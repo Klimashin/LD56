@@ -9,10 +9,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d8af88a590c5ed74f99d1df7437df15f, type: 3}
-  m_Name: Pack3
+  m_Script: {fileID: 11500000, guid: 6ed01b2b4d7f401428f743d8b0ef0959, type: 3}
+  m_Name: DamageLastEnemies 1
   m_EditorClassIdentifier: 
-  UpgradeSlotUi: {fileID: 5969361794368083513, guid: 83a2100a0ba5c214fbfd21c343d44cd8, type: 3}
-  CharactersInPackage:
-  - ann
-  - nut
+  target: 3
+  _usePower: 1
+  _amount: 0

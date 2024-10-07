@@ -17,17 +17,22 @@ MonoBehaviour:
   InitialCharactersPool:
   - teddy
   - monkey
-  - teddy
+  - ann
   - ann
   Stage1Waves:
-  - {fileID: 11400000, guid: 4c7b8dada2f7a274696074508067f21b, type: 2}
+  - {fileID: 11400000, guid: c8353dbd35f15344ca0b2744f3c8202e, type: 2}
   Stage2Waves:
-  - {fileID: 11400000, guid: 4c7b8dada2f7a274696074508067f21b, type: 2}
+  - {fileID: 11400000, guid: 88cf64aa80ae8a8498abb2f881c07f4e, type: 2}
   Stage3Waves:
-  - {fileID: 11400000, guid: 4c7b8dada2f7a274696074508067f21b, type: 2}
+  - {fileID: 11400000, guid: c4c0b65656c46ab4f96101ee5133968e, type: 2}
   Stage4Waves:
   - {fileID: 11400000, guid: 4c7b8dada2f7a274696074508067f21b, type: 2}
   UpgradePackages:
   - {fileID: 11400000, guid: 37c5cca349d989b43892626aacaeca07, type: 2}
+  - {fileID: 11400000, guid: 76ee5aef46dd1aa4d977dfd7a8dfb65d, type: 2}
+  - {fileID: 11400000, guid: d1bdb42c93c75a4499eae6a26898e12a, type: 2}
   - {fileID: 11400000, guid: 40b7e85c202a791479f5df39476b16f1, type: 2}
+  - {fileID: 11400000, guid: 3a9224637ca58524d9846a98b00504e5, type: 2}
+  - {fileID: 11400000, guid: 1924391f7512ad84db4ec806dfabf53b, type: 2}
   - {fileID: 11400000, guid: 2c3bbde5d085fe64b8d0820821d4de2f, type: 2}
+  - {fileID: 11400000, guid: 3ea7c20c209f3674cb28e5e73e3d3c33, type: 2}

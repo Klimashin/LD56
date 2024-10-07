@@ -10,13 +10,13 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: cc5c67797fa41ff4b9a03f4b0a02a85e, type: 3}
-  m_Name: Soldier-blue
+  m_Name: medic
   m_EditorClassIdentifier: 
-  CharacterPrefab: {fileID: 3217989162714998004, guid: 2cc314602cb4d714da2cca94d7afdb7a, type: 3}
+  CharacterPrefab: {fileID: 0}
   CharacterUiDraggablePrefab: {fileID: 0}
-  Hp: 8
-  Power: 3
+  Hp: 3
+  Power: 1
   Cost: 1
   MainAbility: {fileID: 11400000, guid: a0beba05b132c3142be27329d5d7f82a, type: 2}
   OnDeathAbility: {fileID: 0}
-  OnFloorFightEndAbility: {fileID: 0}
+  OnFloorFightEndAbility: {fileID: 11400000, guid: 4cf6ba470d6d54740a964a0688091a33, type: 2}

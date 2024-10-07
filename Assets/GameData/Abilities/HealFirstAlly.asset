@@ -13,5 +13,5 @@ MonoBehaviour:
   m_Name: HealFirstAlly
   m_EditorClassIdentifier: 
   target: 4
-  _usePower: 1
-  _amount: 0
+  _usePower: 0
+  _amount: 5

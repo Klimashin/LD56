@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3ecbd7ee9971be543a0dbb2db83ed5f6, type: 3}
   m_Name: HealAbility
   m_EditorClassIdentifier: 
-  Cost: 1
+  Cost: 2
   target: 0
   type: 1
   Power: 5

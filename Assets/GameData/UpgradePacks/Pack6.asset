@@ -9,9 +9,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d2ed353baba954c4585a1bf7839a6bc9, type: 3}
-  m_Name: Heal All 3
+  m_Script: {fileID: 11500000, guid: d8af88a590c5ed74f99d1df7437df15f, type: 3}
+  m_Name: Pack6
   m_EditorClassIdentifier: 
-  target: 4
-  _usePower: 1
-  _amount: 0
+  UpgradeSlotUi: {fileID: 5969361794368083513, guid: b3f2decf3c66aa648b9af8552ec77dcf, type: 3}
+  CharactersInPackage:
+  - pinata-green
+  - teddy
+  - pinata-red

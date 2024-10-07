@@ -12,5 +12,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 75ca2186884a11c4f9b5c20ba6fe248c, type: 3}
   m_Name: ApplyPoisonFirstEnemy
   m_EditorClassIdentifier: 
-  target: 1
+  target: 3
   _statusEffectData: {fileID: 11400000, guid: 3f33d30ad04ed1b45a9a72928a588168, type: 2}

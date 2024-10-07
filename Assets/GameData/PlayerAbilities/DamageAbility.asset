@@ -16,3 +16,4 @@ MonoBehaviour:
   target: 1
   type: 0
   Power: 3
+  Description: Deal 3 damage to target enemy

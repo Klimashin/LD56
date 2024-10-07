@@ -16,3 +16,4 @@ MonoBehaviour:
   target: 0
   type: 1
   Power: 5
+  Description: Heal 5 HP to target ally

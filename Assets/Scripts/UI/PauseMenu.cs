@@ -22,12 +22,10 @@ public class PauseMenu : MonoBehaviour
     private void OpenMenu()
     {
         _pauseMenu.enabled = true;
-        Time.timeScale = 0f;
     }
     
     private void CloseMenu()
     {
         _pauseMenu.enabled = false;
-        Time.timeScale = 1f;
     }
 }

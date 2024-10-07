@@ -12,6 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6ed01b2b4d7f401428f743d8b0ef0959, type: 3}
   m_Name: DamageLastEnemies 1
   m_EditorClassIdentifier: 
-  target: 3
+  target: 2
   _usePower: 1
   _amount: 0

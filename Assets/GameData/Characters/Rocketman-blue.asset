@@ -20,3 +20,4 @@ MonoBehaviour:
   MainAbility: {fileID: 11400000, guid: 3e3575951081eed4ea6def212bcba287, type: 2}
   OnDeathAbility: {fileID: 0}
   OnFloorFightEndAbility: {fileID: 0}
+  Description: Attack the most distant enemy

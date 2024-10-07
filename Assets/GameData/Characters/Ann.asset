@@ -20,3 +20,4 @@ MonoBehaviour:
   MainAbility: {fileID: 11400000, guid: a0beba05b132c3142be27329d5d7f82a, type: 2}
   OnDeathAbility: {fileID: 0}
   OnFloorFightEndAbility: {fileID: 11400000, guid: f9a8ced72693f794c8a99a2305b977eb, type: 2}
+  Description: 'At the end of combat: this toy gets +2 maximum HP'

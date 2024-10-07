@@ -18,5 +18,6 @@ MonoBehaviour:
   Power: 3
   Cost: 1
   MainAbility: {fileID: 11400000, guid: a0beba05b132c3142be27329d5d7f82a, type: 2}
-  OnDeathAbility: {fileID: 0}
+  OnDeathAbility: {fileID: 11400000, guid: aa5e12a669b934d43afc03b0a14e6a34, type: 2}
   OnFloorFightEndAbility: {fileID: 0}
+  Description: 'When this toy dies: deal 3 damage to the most distant enemy'

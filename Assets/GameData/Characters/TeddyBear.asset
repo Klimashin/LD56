@@ -14,9 +14,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   CharacterPrefab: {fileID: 3217989162714998004, guid: ec6e402e5ff473d42a78717f79aa3be5, type: 3}
   CharacterUiDraggablePrefab: {fileID: 6677052233607744750, guid: 1bc37409dbc0845408728c7ae58e89aa, type: 3}
-  Hp: 25
+  Hp: 30
   Power: 3
-  Cost: 2
+  Cost: 1
   MainAbility: {fileID: 11400000, guid: a0beba05b132c3142be27329d5d7f82a, type: 2}
   OnDeathAbility: {fileID: 0}
   OnFloorFightEndAbility: {fileID: 11400000, guid: 57e5d02b7dfd40e4d8bcbe36ac9fbe46, type: 2}
+  Description: At the end of combat, this toy gains Regeneration 3

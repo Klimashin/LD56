@@ -20,3 +20,4 @@ MonoBehaviour:
   MainAbility: {fileID: 11400000, guid: a0beba05b132c3142be27329d5d7f82a, type: 2}
   OnDeathAbility: {fileID: 11400000, guid: e9c1b7537c6c8854f94d5ebc33d86259, type: 2}
   OnFloorFightEndAbility: {fileID: 0}
+  Description: 'When this toy dies: restore 5 HP to allies'

@@ -20,3 +20,6 @@ MonoBehaviour:
   MainAbility: {fileID: 11400000, guid: 35f8e1535eaf3f040839bec48519efd8, type: 2}
   OnDeathAbility: {fileID: 0}
   OnFloorFightEndAbility: {fileID: 0}
+  Description: 'Attack all enemies
+
+    Apply Poison 3 on attack'

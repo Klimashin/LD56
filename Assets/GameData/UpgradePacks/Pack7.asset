@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d8af88a590c5ed74f99d1df7437df15f, type: 3}
   m_Name: Pack7
   m_EditorClassIdentifier: 
-  UpgradeSlotUi: {fileID: 5969361794368083513, guid: 471da6c315a594d41b27e288fc5bf615, type: 3}
+  UpgradeSlotUi: {fileID: 5969361794368083513, guid: d7d0dd315818af2469a75824fc2f9ff7, type: 3}
   CharactersInPackage:
   - ann
-  - monkey
+  - nut

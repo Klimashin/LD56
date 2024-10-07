@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3ecbd7ee9971be543a0dbb2db83ed5f6, type: 3}
   m_Name: DamageAbility
   m_EditorClassIdentifier: 
-  Cost: 2
+  Cost: 1
   target: 1
   type: 0
   Power: 3

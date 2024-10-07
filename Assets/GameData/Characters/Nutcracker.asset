@@ -20,3 +20,4 @@ MonoBehaviour:
   MainAbility: {fileID: 11400000, guid: 32f10e2c1f0974544b3c30acf21efaaf, type: 2}
   OnDeathAbility: {fileID: 0}
   OnFloorFightEndAbility: {fileID: 0}
+  Description: attack all enemies

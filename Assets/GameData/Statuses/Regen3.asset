@@ -13,4 +13,4 @@ MonoBehaviour:
   m_Name: Regen3
   m_EditorClassIdentifier: 
   TickTrigger: 1
-  value: 2
+  value: 3

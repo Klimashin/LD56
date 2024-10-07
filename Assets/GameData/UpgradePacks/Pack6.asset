@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d8af88a590c5ed74f99d1df7437df15f, type: 3}
   m_Name: Pack6
   m_EditorClassIdentifier: 
-  UpgradeSlotUi: {fileID: 5969361794368083513, guid: b3f2decf3c66aa648b9af8552ec77dcf, type: 3}
+  UpgradeSlotUi: {fileID: 5969361794368083513, guid: 63fa789348c1c4041b0d5ac0d4c23329, type: 3}
   CharactersInPackage:
   - pinata-green
   - teddy

@@ -15,8 +15,8 @@ MonoBehaviour:
   CharacterPrefab: {fileID: 3217989162714998004, guid: f71e3d241651fc542b9e75add9369065, type: 3}
   CharacterUiDraggablePrefab: {fileID: 6677052233607744750, guid: e88f0ddaf09c4574eb1da4f36102ad51, type: 3}
   Hp: 1
-  Power: 1
+  Power: 0
   Cost: 1
   MainAbility: {fileID: 11400000, guid: a0beba05b132c3142be27329d5d7f82a, type: 2}
-  OnDeathAbility: {fileID: 0}
+  OnDeathAbility: {fileID: 11400000, guid: e9c1b7537c6c8854f94d5ebc33d86259, type: 2}
   OnFloorFightEndAbility: {fileID: 0}

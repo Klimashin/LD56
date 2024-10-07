@@ -800,6 +800,8 @@ MonoBehaviour:
   - teddy
   - pinata-red
   - monkey
+  - ann
+  - monkey
   _enemiesWaves:
   - Wave:
     - soldier
@@ -811,7 +813,7 @@ MonoBehaviour:
     - officer
     - soldier
     - soldier
-  _coreBaseHp: 50
+  _coreBaseHp: 30
   _manaPoints: 3
   _bgMusic: {fileID: 8300000, guid: 149a7d1a4bee7bb49b491edbf06525c4, type: 3}
 --- !u!61 &207262616

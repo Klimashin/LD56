@@ -15,7 +15,7 @@ public class Poison : StatusEffect
 {
     public int Value { get; private set; }
     
-    public override string GetText() => $"P{Value.ToString()}";
+    public override string GetText() => Value.ToString();
 
     public Poison(int value)
     {

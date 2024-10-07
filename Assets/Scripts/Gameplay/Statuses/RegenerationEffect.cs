@@ -15,7 +15,7 @@ public class Regeneration : StatusEffect
 {
     public int Value { get; private set; }
     
-    public override string GetText() => $"R{Value.ToString()}";
+    public override string GetText() => Value.ToString();
 
     public Regeneration(int value)
     {

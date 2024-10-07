@@ -1012,6 +1012,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _statusEffectsTransform: {fileID: 2075095050288577093}
   _effectPrefab: {fileID: 8372658427418951842, guid: d26fd2a138cc58f4d8d43d4457c60b53, type: 3}
+  _poisonSprite: {fileID: 21300000, guid: b761673bc1f8090428b668f818ea42b0, type: 3}
+  _regenSprite: {fileID: 21300000, guid: f73766c1fc2d2ee4391917bd43a738b2, type: 3}
 --- !u!114 &7508686031184684152
 MonoBehaviour:
   m_ObjectHideFlags: 0

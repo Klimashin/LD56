@@ -103,6 +103,16 @@ public class BattleController : MonoBehaviour, IEventsDispatcherClient
     {
         return _playerTeamLayout.Where(pair => pair.Value == null).Select(pair => pair.Key).ToList();
     }
+    
+    public List<CharacterPosition> GetOccupiedPlayerZones()
+    {
+        return _playerTeamLayout.Where(pair => pair.Value != null).Select(pair => pair.Key).ToList();
+    }
+    
+    public List<CharacterPosition> GetOccupiedEnemyZones()
+    {
+        return _enemyTeamLayout.Where(pair => pair.Value != null).Select(pair => pair.Key).ToList();
+    }
 
     private async UniTaskVoid BattleRoutine()
     {
@@ -435,6 +445,40 @@ public class BattleController : MonoBehaviour, IEventsDispatcherClient
         }
 
         return true;
+    }
+
+    public bool TryApplyAbility(PlayerAbilityData abilityData, ZoneHitData zoneHitData)
+    {
+        var target = abilityData.target;
+        if (!zoneHitData.zoneHit || target == PlayerAbilityTarget.PlayerUnit && zoneHitData.zoneType != ZoneType.Left ||
+            target == PlayerAbilityTarget.EnemyUnit && zoneHitData.zoneType != ZoneType.Right)
+        {
+            return false;
+        }
+        
+        var pos = new CharacterPosition(zoneHitData);
+        var abilitySelectedTarget =
+            target == PlayerAbilityTarget.PlayerUnit ? _playerTeamLayout[pos] : _enemyTeamLayout[pos];
+        if (abilitySelectedTarget == null || abilitySelectedTarget.IsDead)
+        {
+            return false;
+        }
+
+        switch (abilityData.type)
+        {
+            case PlayerAbilityType.Damage:
+                ManaPoints -= abilityData.Cost;
+                abilitySelectedTarget.Damage(abilityData.Power);
+                return true;
+            
+            case PlayerAbilityType.Heal:
+                ManaPoints -= abilityData.Cost;
+                abilitySelectedTarget.Heal(abilityData.Power);
+                return true;
+            
+            default:
+                return false;
+        }
     }
 }
 

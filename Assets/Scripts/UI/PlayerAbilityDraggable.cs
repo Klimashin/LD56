@@ -5,17 +5,18 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-public class ToyBoxDraggableItem : MonoBehaviour, IBeginDragHandler, IEndDragHandler, IDragHandler
+public class PlayerAbilityDraggable : MonoBehaviour, IBeginDragHandler, IEndDragHandler, IDragHandler
 {
     [SerializeField] private Image raycastTarget;
     [SerializeField] private TextMeshProUGUI _costText;
+    [SerializeField] private TextMeshProUGUI _powerText;
+    [SerializeField] private PlayerAbilityData _abilityData;
     
     private Vector3 _initialPos;
     private Physics2DRaycaster _physics2DRaycaster;
     private BattleController _battleController;
     private FieldPlaceholdersController _fieldPlaceholdersController;
-    private CharacterData _characterData;
-
+    
     private readonly List<RaycastResult> _raycastResults = new ();
 
     [Inject]
@@ -25,35 +26,42 @@ public class ToyBoxDraggableItem : MonoBehaviour, IBeginDragHandler, IEndDragHan
         _battleController = battleController;
         _fieldPlaceholdersController = fieldPlaceholdersController;
     }
-
-    public void SetCharacterData(CharacterData characterData)
+    
+    private void Start()
     {
-        _characterData = characterData;
-        _costText.text = characterData.Cost.ToString();
+        _costText.text = _abilityData.Cost.ToString();
+        _powerText.text = _abilityData.Power.ToString();
     }
     
     public void OnBeginDrag(PointerEventData eventData)
     {
-        if (_battleController.ManaPoints < _characterData.Cost)
+        if (_battleController.ManaPoints < _abilityData.Cost)
         {
             return;
         }
 
         _initialPos = transform.position;
         raycastTarget.raycastTarget = false;
-        GetComponent<LayoutElement>().ignoreLayout = true;
-        _fieldPlaceholdersController.StartHighlightingFreePlayerZones();
+
+        if (_abilityData.target == PlayerAbilityTarget.PlayerUnit)
+        {
+            _fieldPlaceholdersController.StartHighlightingOccupiedPlayerZones();
+        }
+        else
+        {
+            _fieldPlaceholdersController.StartHighlightingOccupiedEnemyZones();
+        }
+        
     }
 
     public void OnEndDrag(PointerEventData eventData)
     {
-        if (_battleController.ManaPoints < _characterData.Cost)
+        if (_battleController.ManaPoints < _abilityData.Cost)
         {
             return;
         }
         
         _fieldPlaceholdersController.StopHighlightingZones();
-        GetComponent<LayoutElement>().ignoreLayout = false;
         raycastTarget.raycastTarget = true;
         
         _raycastResults.Clear();
@@ -64,11 +72,9 @@ public class ToyBoxDraggableItem : MonoBehaviour, IBeginDragHandler, IEndDragHan
             if (raycastResult.gameObject.TryGetComponent<GameField>(out var gameField))
             {
                 var zoneHitData = gameField.GetZoneHitData(raycastResult);
-                Debug.Log($"GameField was hit! HitData: {zoneHitData}");
-                if (_battleController.PlacePlayerCharacter(_characterData, zoneHitData))
+                if (_battleController.TryApplyAbility(_abilityData, zoneHitData))
                 {
-                    Destroy(gameObject);
-                    return;
+                    break;
                 }
             }
         }
@@ -78,31 +84,11 @@ public class ToyBoxDraggableItem : MonoBehaviour, IBeginDragHandler, IEndDragHan
 
     public void OnDrag(PointerEventData eventData)
     {
-        if (_battleController.ManaPoints < _characterData.Cost)
+        if (_battleController.ManaPoints < _abilityData.Cost)
         {
             return;
         }
         
         transform.position = eventData.position;
-        
-        _raycastResults.Clear();
-        _physics2DRaycaster.Raycast(eventData, _raycastResults);
-            
-        foreach (var raycastResult in _raycastResults)
-        {
-            if (raycastResult.gameObject.TryGetComponent<GameField>(out var gameField))
-            {
-                var zoneHitData = gameField.GetZoneHitData(raycastResult);
-                if (!zoneHitData.zoneHit)
-                {
-                    continue;
-                }
-
-                if (_battleController.CanPlacePlayerCharacter(zoneHitData))
-                {
-                    // highlight
-                }
-            }
-        }
     }
 }

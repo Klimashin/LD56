@@ -41,16 +41,32 @@ public class FieldPlaceholdersController : MonoBehaviour
     public void StartHighlightingFreePlayerZones()
     {
         var freeZones = _battleController.GetFreePlayerZones();
-        Debug.Log("Start highlighting: " + freeZones.Count);
         foreach (var characterPosition in freeZones)
         {
             _placeholders[characterPosition].gameObject.SetActive(true);   
         }
     }
     
-    public void StopHighlightingFreePlayerZones()
+    public void StartHighlightingOccupiedPlayerZones()
     {
-        Debug.Log("Stop highlighting: ");
+        var zones = _battleController.GetOccupiedPlayerZones();
+        foreach (var characterPosition in zones)
+        {
+            _placeholders[characterPosition].gameObject.SetActive(true);   
+        }
+    }
+    
+    public void StartHighlightingOccupiedEnemyZones()
+    {
+        var zones = _battleController.GetOccupiedEnemyZones();
+        foreach (var characterPosition in zones)
+        {
+            _placeholders[characterPosition].gameObject.SetActive(true);   
+        }
+    }
+    
+    public void StopHighlightingZones()
+    {
         foreach (var characterPosition in _placeholders.Keys)
         {
             _placeholders[characterPosition].gameObject.SetActive(false);   

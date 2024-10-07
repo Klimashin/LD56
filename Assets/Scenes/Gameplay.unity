@@ -795,10 +795,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _availableCharacters:
   - ann
-  - ann
+  - pinata-green
   - teddy
   - teddy
-  - monkey
+  - pinata-red
   - monkey
   _enemiesWaves:
   - Wave:

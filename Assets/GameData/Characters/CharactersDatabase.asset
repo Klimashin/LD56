@@ -19,9 +19,13 @@ MonoBehaviour:
     - monkey
     - soldier
     - officer
+    - pinata-green
+    - pinata-red
     _valueData:
     - {fileID: 11400000, guid: dba0296151a394c4ea358b28739508ae, type: 2}
     - {fileID: 11400000, guid: 7ada63c0ea054aa47b6495784e9eccbe, type: 2}
     - {fileID: 11400000, guid: bdaa134ef62a6824984532c88ae57424, type: 2}
     - {fileID: 11400000, guid: fed6a87526b9c27479a9949d6d25ca90, type: 2}
     - {fileID: 11400000, guid: 6d76db5173d1405458a0112211287ad8, type: 2}
+    - {fileID: 11400000, guid: 2651fa1fc57baf94fb5169bd5643d899, type: 2}
+    - {fileID: 11400000, guid: 9ba771c7eae007749886050aeef09b8c, type: 2}

@@ -8,14 +8,22 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 5802161130685830098, guid: 46e7377347c2dc548985841b9f78ff14, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: -6.7
+      objectReference: {fileID: 0}
+    - target: {fileID: 5802161130685830098, guid: 46e7377347c2dc548985841b9f78ff14, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -0.2
+      objectReference: {fileID: 0}
     - target: {fileID: 6132257411441381693, guid: 46e7377347c2dc548985841b9f78ff14, type: 3}
       propertyPath: m_Name
-      value: TeddyBearDraggable
+      value: PinataGreenDraggable
       objectReference: {fileID: 0}
     - target: {fileID: 8643319483111220585, guid: 46e7377347c2dc548985841b9f78ff14, type: 3}
       propertyPath: m_Sprite
       value: 
-      objectReference: {fileID: 21300000, guid: 68238fc8ab498be4aaac9471f9dc8c3f, type: 3}
+      objectReference: {fileID: 21300000, guid: 3d5381241c1f5c44d8754bd614c99cf2, type: 3}
     - target: {fileID: 8643319483111220585, guid: 46e7377347c2dc548985841b9f78ff14, type: 3}
       propertyPath: m_PreserveAspect
       value: 1
@@ -26,10 +34,6 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 9095941629975716854, guid: 46e7377347c2dc548985841b9f78ff14, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 9095941629975716854, guid: 46e7377347c2dc548985841b9f78ff14, type: 3}
-      propertyPath: m_LocalPosition.z
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 9095941629975716854, guid: 46e7377347c2dc548985841b9f78ff14, type: 3}

@@ -17,7 +17,6 @@ public class Character : MonoBehaviour
     public int MaxHp => _characterData.Hp + _bonusHp;
     public int Hp { get; private set; }
     public int Power => _characterData.Power + _powerBonus;
-    public bool Haste { get; private set; }
     public bool IsDead => Hp <= 0;
 
     public Action<Character> OnLethalDamage;
@@ -27,8 +26,8 @@ public class Character : MonoBehaviour
     public bool IsEnemy => LayoutPos.zoneType == ZoneType.Right;
     public bool IsHandlingInProgress => _handlesHashSet.Count > 0;
 
-    private int _powerBonus = 0;
-    private int _bonusHp = 0;
+    private int _powerBonus;
+    private int _bonusHp;
     private BattleController _battleController;
     private FloatingTextFactory _floatingTextFactory;
     private readonly HashSet<string> _handlesHashSet = new ();
@@ -116,8 +115,12 @@ public class Character : MonoBehaviour
         if (ability != null)
         {
             var targets = ability.SelectTargets(possibleTargets, this);
+            
+            transform.DOPunchScale(new Vector3(0.1f, 0.1f, 0.1f), 0.4f, 1);
 
             ability.Apply(targets, this);
+            
+            await UniTask.Delay(TimeSpan.FromSeconds(BattleController.STANDARD_DELAY), DelayType.DeltaTime, PlayerLoopTiming.Update, destroyCancellationToken);
         }
         
         StatusEffectsTick();
@@ -137,6 +140,8 @@ public class Character : MonoBehaviour
 
             statusEffect.Tick(this);
         }
+
+        ClearExpiredEffects();
         
         UpdateDisplays();
     }
@@ -179,14 +184,27 @@ public class Character : MonoBehaviour
 
     private async UniTaskVoid DeathRoutine()
     {
-        await UniTask.Delay(TimeSpan.FromSeconds(0.5f), DelayType.DeltaTime, PlayerLoopTiming.Update, destroyCancellationToken);
+        await UniTask.Delay(TimeSpan.FromSeconds(BattleController.STANDARD_DELAY), DelayType.DeltaTime, PlayerLoopTiming.Update, destroyCancellationToken);
         Destroy(gameObject);
     }
 
     private async UniTask MainAbilityAnimation()
     {
-        transform.DOPunchScale(new Vector3(0.1f, 0.1f, 0.1f), 0.4f, 1);
-        await UniTask.Delay(TimeSpan.FromSeconds(0.5f), DelayType.DeltaTime, PlayerLoopTiming.Update, destroyCancellationToken);
+        var defaultOrder = _sprite.sortingOrder;
+        var animationSeq = DOTween.Sequence().SetAutoKill(false);
+        _sprite.sortingOrder++;
+        animationSeq
+            .Append(transform.DOMoveX(transform.position.x + (IsEnemy ? -2f : 2f), BattleController.STANDARD_DELAY / 2f))
+            .OnComplete(() =>
+            {
+                animationSeq
+                    .SetAutoKill(true)
+                    .PlayBackwards();
+            });
+
+        await UniTask.Delay(TimeSpan.FromSeconds(BattleController.STANDARD_DELAY), DelayType.DeltaTime, PlayerLoopTiming.Update, destroyCancellationToken);
+
+        _sprite.sortingOrder = defaultOrder;
     }
 
     public void ApplyStatusEffect(StatusEffect statusEffect)

@@ -38,7 +38,7 @@ public class BattleController : MonoBehaviour, IEventsDispatcherClient
         Fight
     }
     
-    private float _standardDelay = 0.5f;
+    public const float STANDARD_DELAY = 0.5f;
 
     [Inject]
     private void Inject(BattleUI battleUI, CharactersDatabase charactersDatabase, GameField gameField, CinemachineVirtualCamera virtualCamera, SoundSystem soundSystem)
@@ -155,11 +155,11 @@ public class BattleController : MonoBehaviour, IEventsDispatcherClient
             
             UpdateCameraPosition(floorIndex);
             
-            await UniTask.Delay(TimeSpan.FromSeconds(1f), DelayType.DeltaTime, PlayerLoopTiming.Update, destroyCancellationToken);
+            await UniTask.Delay(TimeSpan.FromSeconds(STANDARD_DELAY), DelayType.DeltaTime, PlayerLoopTiming.Update, destroyCancellationToken);
             
             await HandleFloorFight(floorIndex);
             
-            await UniTask.Delay(TimeSpan.FromSeconds(1f), DelayType.DeltaTime, PlayerLoopTiming.Update, destroyCancellationToken);
+            await UniTask.Delay(TimeSpan.FromSeconds(STANDARD_DELAY), DelayType.DeltaTime, PlayerLoopTiming.Update, destroyCancellationToken);
         }
 
         _currentWaveIndex++;
@@ -194,7 +194,7 @@ public class BattleController : MonoBehaviour, IEventsDispatcherClient
 
             await UniTask.WaitUntil(() => !charactersOnTheFloor.Any(c => c.IsHandlingInProgress));
             
-            await UniTask.Delay(TimeSpan.FromSeconds(_standardDelay), DelayType.DeltaTime, PlayerLoopTiming.Update, destroyCancellationToken);
+            await UniTask.Delay(TimeSpan.FromSeconds(STANDARD_DELAY), DelayType.DeltaTime, PlayerLoopTiming.Update, destroyCancellationToken);
         }
         
         foreach (var character in playerUnitsOnTheFloor)
@@ -208,7 +208,7 @@ public class BattleController : MonoBehaviour, IEventsDispatcherClient
             
             await UniTask.WaitUntil(() => !charactersOnTheFloor.Any(c => c.IsHandlingInProgress));
             
-            await UniTask.Delay(TimeSpan.FromSeconds(_standardDelay), DelayType.DeltaTime, PlayerLoopTiming.Update, destroyCancellationToken);
+            await UniTask.Delay(TimeSpan.FromSeconds(STANDARD_DELAY), DelayType.DeltaTime, PlayerLoopTiming.Update, destroyCancellationToken);
         }
 
         CleanUpFloor(floorIndex);
@@ -221,7 +221,7 @@ public class BattleController : MonoBehaviour, IEventsDispatcherClient
             await UniTask.WaitUntil(() => !charactersOnTheFloor.Any(c => c.IsHandlingInProgress));
         }
         
-        await UniTask.Delay(TimeSpan.FromSeconds(_standardDelay), DelayType.DeltaTime, PlayerLoopTiming.Update, destroyCancellationToken);
+        await UniTask.Delay(TimeSpan.FromSeconds(STANDARD_DELAY), DelayType.DeltaTime, PlayerLoopTiming.Update, destroyCancellationToken);
 
         await MoveEnemiesToTheNextFloor(floorIndex);
     }
@@ -259,7 +259,7 @@ public class BattleController : MonoBehaviour, IEventsDispatcherClient
         }
         else
         {
-            await UniTask.Delay(TimeSpan.FromSeconds(_standardDelay), DelayType.DeltaTime, PlayerLoopTiming.Update, destroyCancellationToken);
+            await UniTask.Delay(TimeSpan.FromSeconds(STANDARD_DELAY), DelayType.DeltaTime, PlayerLoopTiming.Update, destroyCancellationToken);
             
             foreach (var character in enemiesOnTheFloor)
             {
@@ -276,7 +276,7 @@ public class BattleController : MonoBehaviour, IEventsDispatcherClient
                 _enemyTeamLayout[currentPos] = character;
             }
             
-            await UniTask.Delay(TimeSpan.FromSeconds(_standardDelay), DelayType.DeltaTime, PlayerLoopTiming.Update, destroyCancellationToken);
+            await UniTask.Delay(TimeSpan.FromSeconds(STANDARD_DELAY), DelayType.DeltaTime, PlayerLoopTiming.Update, destroyCancellationToken);
         }
     }
 

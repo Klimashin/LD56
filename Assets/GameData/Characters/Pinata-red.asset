@@ -10,12 +10,13 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: cc5c67797fa41ff4b9a03f4b0a02a85e, type: 3}
-  m_Name: Soldier heavy
+  m_Name: Pinata-red
   m_EditorClassIdentifier: 
-  CharacterPrefab: {fileID: 3217989162714998004, guid: 0f31848fb636f8945a48128db301325a, type: 3}
-  CharacterUiDraggablePrefab: {fileID: 0}
-  Hp: 15
-  Power: 3
+  CharacterPrefab: {fileID: 3217989162714998004, guid: b98972835575bb84bb1a56f32f4e6b62, type: 3}
+  CharacterUiDraggablePrefab: {fileID: 6677052233607744750, guid: 258f172978663644591d3e6748281ac8, type: 3}
+  Hp: 1
+  Power: 1
+  Cost: 1
   MainAbility: {fileID: 11400000, guid: a0beba05b132c3142be27329d5d7f82a, type: 2}
   OnDeathAbility: {fileID: 0}
   OnFloorFightEndAbility: {fileID: 0}

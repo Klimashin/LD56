@@ -65,7 +65,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 68238fc8ab498be4aaac9471f9dc8c3f, type: 3}
+  m_Sprite: {fileID: 21300000, guid: c920bfcd395cf9c42b29211086678ea1, type: 3}
   m_Type: 0
   m_PreserveAspect: 1
   m_FillCenter: 1
@@ -164,7 +164,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6293587030946188676, guid: c9e755de24e39ff428a98ea2fadeccc7, type: 3}
       propertyPath: m_text
-      value: Beefy Buff Pack
+      value: Jynx monkey Pack
       objectReference: {fileID: 0}
     - target: {fileID: 6293587030946188676, guid: c9e755de24e39ff428a98ea2fadeccc7, type: 3}
       propertyPath: m_fontSize

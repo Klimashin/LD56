@@ -14,5 +14,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   UpgradeSlotUi: {fileID: 5969361794368083513, guid: 9d2e6c500e0cfa34680a0ae1ae0f8abb, type: 3}
   CharactersInPackage:
-  - teddy
+  - pinata-red
   - monkey

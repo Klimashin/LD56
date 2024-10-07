@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Cinemachine;
 using Cysharp.Threading.Tasks;
+using DG.Tweening;
 using JetBrains.Annotations;
 using Reflex.Attributes;
 using UnityEngine;
@@ -10,6 +11,8 @@ using UnityEngine;
 public class BattleController : MonoBehaviour, IEventsDispatcherClient
 {
     [SerializeField] private AudioClip _bgMusic;
+    [SerializeField] private GameObject _king;
+    [SerializeField] private Transform _kingAttackPos;
 
     private BattleUI _battleUi;
     private GameField _gameField;
@@ -20,6 +23,7 @@ public class BattleController : MonoBehaviour, IEventsDispatcherClient
     private GameplayPersistentData _gameplayPersistentData;
     private GameSettings _gameSettings;
     private UpgradeUI _upgradeUi;
+    private FloatingTextFactory _floatingTextFactory;
     private readonly Dictionary<CharacterPosition, Character> _playerTeamLayout = new ();
     private readonly Dictionary<CharacterPosition, Character> _enemyTeamLayout = new ();
     private BattlePhase _currentBattlePhase = BattlePhase.Deploy;
@@ -49,7 +53,8 @@ public class BattleController : MonoBehaviour, IEventsDispatcherClient
         SoundSystem soundSystem,
         GameSettings gameSettings,
         GameplayPersistentData gameplayPersistentData,
-        UpgradeUI upgradeUI)
+        UpgradeUI upgradeUI,
+        FloatingTextFactory floatingTextFactory)
     {
         _battleUi = battleUI;
         _charactersDatabase = charactersDatabase;
@@ -60,6 +65,7 @@ public class BattleController : MonoBehaviour, IEventsDispatcherClient
         _gameplayPersistentData = gameplayPersistentData;
         _gameSettings = gameSettings;
         _upgradeUi = upgradeUI;
+        _floatingTextFactory = floatingTextFactory;
     }
 
     private void Start()
@@ -120,7 +126,7 @@ public class BattleController : MonoBehaviour, IEventsDispatcherClient
         var wave = WavesConfig.Waves[_currentWaveIndex];
         await SpawnWave(wave);
         
-        while (!IsGameWon() || IsGameLost())
+        while (!IsGameWon() && !IsGameLost())
         {
             ManaPoints = _gameSettings.BaseManaPoints;
             
@@ -218,6 +224,12 @@ public class BattleController : MonoBehaviour, IEventsDispatcherClient
             await UniTask.Delay(TimeSpan.FromSeconds(STANDARD_DELAY), DelayType.DeltaTime, PlayerLoopTiming.Update, destroyCancellationToken);
             
             await HandleFloorFight(floorIndex);
+            
+            if (IsGameLost())
+            {
+                await UniTask.Delay(TimeSpan.FromSeconds(STANDARD_DELAY), DelayType.DeltaTime, PlayerLoopTiming.Update, destroyCancellationToken);
+                return;
+            }
             
             await UniTask.Delay(TimeSpan.FromSeconds(STANDARD_DELAY), DelayType.DeltaTime, PlayerLoopTiming.Update, destroyCancellationToken);
         }
@@ -348,10 +360,51 @@ public class BattleController : MonoBehaviour, IEventsDispatcherClient
         
         foreach (var character in charactersList)
         {
-            CoreHp -= character.Power;
+            character.transform.position = _kingAttackPos.position;
+            
+            await UniTask.Delay(TimeSpan.FromSeconds(STANDARD_DELAY), DelayType.DeltaTime, PlayerLoopTiming.Update, destroyCancellationToken);
+            
+            while (!character.IsDead)
+            {
+                await character.MainAbilityAnimation();
+                CoreHp -= character.Power;
+
+                if (IsGameLost())
+                {
+                    break;
+                }
+                
+                _floatingTextFactory.ShowFloatingText($"-{character.Power.ToString()}", _king.transform.position + Vector3.up * 2.5f, FloatingTextFactory.FloatingTextType.Red);
+                await HandleKingAttack(character);
+            }
+            
+            if (IsGameLost())
+            {
+                break;
+            }
+
             _enemyTeamLayout[character.LayoutPos] = null;
-            Destroy(character.gameObject);
         }
+    }
+
+    private async UniTask HandleKingAttack(Character character)
+    {
+        var animationSeq = DOTween.Sequence().SetAutoKill(false);
+        animationSeq
+            .Append(_king.transform.DOMoveX(_king.transform.position.x + 2f, STANDARD_DELAY / 2f))
+            .Join(_king.transform.DORotate(new Vector3(0f, 0f, -20f), STANDARD_DELAY / 2f))
+            .OnComplete(() =>
+            {
+                animationSeq
+                    .SetAutoKill(true)
+                    .PlayBackwards();
+            });
+
+        await UniTask.Delay(TimeSpan.FromSeconds(STANDARD_DELAY), DelayType.DeltaTime, PlayerLoopTiming.Update, destroyCancellationToken);
+        
+        character.Damage(_gameSettings.KingDamage);
+        
+        await UniTask.Delay(TimeSpan.FromSeconds(STANDARD_DELAY), DelayType.DeltaTime, PlayerLoopTiming.Update, destroyCancellationToken);
     }
 
     private void CleanUpFloor(int floorIndex)

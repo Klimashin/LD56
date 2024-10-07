@@ -9,6 +9,7 @@ public class GameSettings : ScriptableObject
 {
     [SerializeField] public int CoreBaseHp = 30;
     [SerializeField] public int BaseManaPoints = 3;
+    [SerializeField] public int KingDamage = 5;
     [SerializeField] private List<string> InitialCharactersPool;
     [SerializeField] private List<WavesConfig> Stage1Waves;
     [SerializeField] private List<WavesConfig> Stage2Waves;

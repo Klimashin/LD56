@@ -19,10 +19,14 @@ public class IncAttackPower : StatusEffect
     {
         Value = value;
     }
+
+    public override void Apply(Character character)
+    {
+        character.SetPowerBonus(Value);
+    }
     
     public override void Tick(Character character)
     {
-        character.SetPowerBonus(Value);
         if (Value == 0)
         {
             Expire();

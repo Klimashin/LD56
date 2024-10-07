@@ -20,6 +20,8 @@ public abstract class StatusEffect
     
     public abstract void Merge(StatusEffect newEffect);
 
+    public abstract void Apply(Character character);
+
     public virtual string GetText() => string.Empty;
 
     public void Expire()

@@ -11,6 +11,7 @@ public class Character : MonoBehaviour
     [SerializeField] private CharacterDataDisplay[] _dataDisplays;
     [SerializeField] private SpriteRenderer _sprite;
     [SerializeField] private float _floatingTextOffsetY = 1.5f;
+    [SerializeField] private GameObject DeathParticlesPrefab;
     
     private CharacterData _characterData;
 
@@ -190,11 +191,15 @@ public class Character : MonoBehaviour
 
     private async UniTaskVoid DeathRoutine()
     {
-        await UniTask.Delay(TimeSpan.FromSeconds(BattleController.STANDARD_DELAY), DelayType.DeltaTime, PlayerLoopTiming.Update, destroyCancellationToken);
-        Destroy(gameObject);
+        await UniTask.Delay(TimeSpan.FromSeconds(BattleController.STANDARD_DELAY / 2f), DelayType.DeltaTime, PlayerLoopTiming.Update, destroyCancellationToken);
+
+        var deathParticles = Instantiate(DeathParticlesPrefab);
+        deathParticles.transform.position = transform.position;
+        
+        Destroy(gameObject, 0.1f);
     }
 
-    private async UniTask MainAbilityAnimation()
+    public async UniTask MainAbilityAnimation()
     {
         var defaultOrder = _sprite.sortingOrder;
         var animationSeq = DOTween.Sequence().SetAutoKill(false);
@@ -220,11 +225,15 @@ public class Character : MonoBehaviour
         if (StatusEffects.TryGetValue(effectType, out var existingEffect) && existingEffect != null)
         {
             existingEffect.Merge(statusEffect);
+            existingEffect.Apply(this);
         }
         else
         {
             StatusEffects.Add(effectType, statusEffect);
+            statusEffect.Apply(this);
         }
+        
+        UpdateDisplays();
     }
 
     public void ClearExpiredEffects()

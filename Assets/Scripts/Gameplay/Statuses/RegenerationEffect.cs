@@ -22,6 +22,10 @@ public class Regeneration : StatusEffect
         Value = value;
     }
     
+    public override void Apply(Character character)
+    {
+    }
+    
     public override void Tick(Character character)
     {
         character.Heal(Value);

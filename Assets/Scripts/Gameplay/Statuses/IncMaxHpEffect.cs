@@ -20,9 +20,13 @@ public class IncMaxHp : StatusEffect
         Value = value;
     }
     
-    public override void Tick(Character character)
+    public override void Apply(Character character)
     {
         character.SetHpBonus(Value);
+    }
+    
+    public override void Tick(Character character)
+    {
         if (Value == 0)
         {
             Expire();

@@ -17,3 +17,4 @@ MonoBehaviour:
   type: 1
   Power: 5
   Description: Heal 5 HP to target ally
+  abilityAudio: {fileID: 8300000, guid: 366315a0f4b7d5d429b9a10a18414439, type: 3}

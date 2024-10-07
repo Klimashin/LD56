@@ -5,6 +5,7 @@ using Cysharp.Threading.Tasks;
 using DG.Tweening;
 using Reflex.Attributes;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 public class Character : MonoBehaviour
 {
@@ -14,6 +15,8 @@ public class Character : MonoBehaviour
     [SerializeField] private GameObject DeathParticlesPrefab;
     [SerializeField] private Canvas _uiCanvas;
     [SerializeField] private CharacterHintRaycastZone _hintRaycastZone;
+    [SerializeField] private List<AudioClip> _attackAudio;
+    [SerializeField] private List<AudioClip> _deathAudio;
     
     private CharacterData _characterData;
 
@@ -31,16 +34,18 @@ public class Character : MonoBehaviour
 
     private int _powerBonus;
     private int _bonusHp;
+    private SoundSystem _soundSystem;
     private BattleController _battleController;
     private FloatingTextFactory _floatingTextFactory;
     private readonly HashSet<string> _handlesHashSet = new ();
 
     [Inject]
-    private void Inject(BattleController battleController, FloatingTextFactory floatingTextFactory, Camera camera)
+    private void Inject(BattleController battleController, FloatingTextFactory floatingTextFactory, Camera camera, SoundSystem soundSystem)
     {
         _battleController = battleController;
         _floatingTextFactory = floatingTextFactory;
         _uiCanvas.worldCamera = camera;
+        _soundSystem = soundSystem;
     }
 
     public void Initialize(CharacterData characterData, CharacterPosition layoutPos)
@@ -201,11 +206,25 @@ public class Character : MonoBehaviour
         var deathParticles = Instantiate(DeathParticlesPrefab);
         deathParticles.transform.position = transform.position;
         
-        Destroy(gameObject, 0.1f);
+        if (_deathAudio.Count > 0)
+        {
+            int sfxIndex = Random.Range(0, _deathAudio.Count);
+            _soundSystem.PlayOneShot(_deathAudio[sfxIndex]);
+        }
+        
+        _uiCanvas.gameObject.SetActive(false);
+        _sprite.gameObject.SetActive(false);
+        Destroy(gameObject, 2f);
     }
 
     public async UniTask MainAbilityAnimation()
     {
+        if (_attackAudio.Count > 0)
+        {
+            int sfxIndex = Random.Range(0, _attackAudio.Count);
+            _soundSystem.PlayOneShot(_attackAudio[sfxIndex]);
+        }
+
         var defaultOrder = _sprite.sortingOrder;
         var animationSeq = DOTween.Sequence().SetAutoKill(false);
         _sprite.sortingOrder++;
@@ -248,10 +267,5 @@ public class Character : MonoBehaviour
         {
             StatusEffects.Remove(expiredEffectPair.Key);
         }
-    }
-
-    public string GetDescription()
-    {
-        return _characterData?.Description ?? string.Empty;
     }
 }

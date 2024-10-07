@@ -17,3 +17,4 @@ MonoBehaviour:
   type: 0
   Power: 3
   Description: Deal 3 damage to target enemy
+  abilityAudio: {fileID: 8300000, guid: 8f0b28b990e392e4a9e0fcec2c8bd41a, type: 3}

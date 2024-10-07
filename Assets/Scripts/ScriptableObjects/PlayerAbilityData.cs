@@ -8,6 +8,7 @@ public class PlayerAbilityData : ScriptableObject
     [SerializeField] public PlayerAbilityType type;
     [SerializeField] public int Power = 1;
     [SerializeField, TextArea] public string Description;
+    [SerializeField] public AudioClip abilityAudio;
 }
 
 public enum PlayerAbilityTarget

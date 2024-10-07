@@ -670,6 +670,14 @@ MonoBehaviour:
   _bgMusic: {fileID: 8300000, guid: 149a7d1a4bee7bb49b491edbf06525c4, type: 3}
   _king: {fileID: 566377115}
   _kingAttackPos: {fileID: 404792034}
+  _placeAudio:
+  - {fileID: 8300000, guid: 897941291e095a64eb1d089d48aaa154, type: 3}
+  - {fileID: 8300000, guid: 70364f130fddc51449fbef555352f7fc, type: 3}
+  - {fileID: 8300000, guid: 1d79b48e5e5c24848a77c70570b3affd, type: 3}
+  _winSfx: {fileID: 8300000, guid: 28092b5b0b9063f438cdc022dc5de023, type: 3}
+  _kingHitSfx:
+  - {fileID: 8300000, guid: 420d9aed2cb7f444a956b29cedd40099, type: 3}
+  - {fileID: 8300000, guid: 31ff67e4310d3d347b3ce7d15d299f3c, type: 3}
 --- !u!61 &207262616
 BoxCollider2D:
   m_ObjectHideFlags: 0

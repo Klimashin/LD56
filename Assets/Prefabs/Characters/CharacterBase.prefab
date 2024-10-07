@@ -590,6 +590,13 @@ MonoBehaviour:
   DeathParticlesPrefab: {fileID: 8485418699598024725, guid: d7a9dee5aa726dc4daeb8f33d0cb8733, type: 3}
   _uiCanvas: {fileID: 2222789831612075490}
   _hintRaycastZone: {fileID: 3632150255694370738}
+  _attackAudio:
+  - {fileID: 8300000, guid: 96f285b81e97a5949b023f3b72e233fd, type: 3}
+  - {fileID: 8300000, guid: c2d226b777fbc1c4d9458517fcee0cbe, type: 3}
+  - {fileID: 8300000, guid: f2205cf2daa451248bf6a4ea584bd17e, type: 3}
+  _deathAudio:
+  - {fileID: 8300000, guid: 8c043dc0be1abf949bc68e62021ca41b, type: 3}
+  - {fileID: 8300000, guid: 1ef44894b14f1b843824f6cd646e3c64, type: 3}
 --- !u!114 &5630273373176331263
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -7,12 +7,17 @@ using DG.Tweening;
 using JetBrains.Annotations;
 using Reflex.Attributes;
 using UnityEngine;
+using UnityEngine.SceneManagement;
+using Random = UnityEngine.Random;
 
 public class BattleController : MonoBehaviour, IEventsDispatcherClient
 {
     [SerializeField] private AudioClip _bgMusic;
     [SerializeField] private GameObject _king;
     [SerializeField] private Transform _kingAttackPos;
+    [SerializeField] private List<AudioClip> _placeAudio;
+    [SerializeField] private AudioClip _winSfx;
+    [SerializeField] private List<AudioClip> _kingHitSfx;
 
     private BattleUI _battleUi;
     private GameField _gameField;
@@ -139,7 +144,7 @@ public class BattleController : MonoBehaviour, IEventsDispatcherClient
         
         UpdateBattlePhase(BattlePhase.EndGame);
 
-        OnEndBattle();
+        OnEndBattle().Forget();
     }
 
     private void UpdateBattlePhase(BattlePhase phase)
@@ -157,15 +162,16 @@ public class BattleController : MonoBehaviour, IEventsDispatcherClient
         return _currentWaveIndex >= WavesConfig.Waves.Count && GetAllAliveEnemies().Count == 0;
     }
 
-    private void OnEndBattle()
+    private async UniTaskVoid OnEndBattle()
     {
         bool isWon = !IsGameLost();
         if (isWon)
         {
+            _soundSystem.PlayOneShot(_winSfx);
             if (_gameplayPersistentData.currentStage == GameSettings.MAX_STAGE_INDEX)
             {
-                // handle end game
-                Debug.Log("Game was completely won! Not implemented yet.");
+                await UniTask.Delay(TimeSpan.FromSeconds(STANDARD_DELAY) * 2, DelayType.DeltaTime, PlayerLoopTiming.Update, destroyCancellationToken);
+                SceneManager.LoadScene(5);
             }
             else
             {
@@ -177,8 +183,8 @@ public class BattleController : MonoBehaviour, IEventsDispatcherClient
         }
         else
         {
-            Debug.Log("Game was lost! Not implemented yet.");
-            // handle defeat
+            await UniTask.Delay(TimeSpan.FromSeconds(STANDARD_DELAY) * 2, DelayType.DeltaTime, PlayerLoopTiming.Update, destroyCancellationToken);
+            SceneManager.LoadScene(4);
         }
     }
 
@@ -420,6 +426,9 @@ public class BattleController : MonoBehaviour, IEventsDispatcherClient
                     .SetAutoKill(true)
                     .PlayBackwards();
             });
+        
+        int sfxIndex = Random.Range(0, _kingHitSfx.Count);
+        _soundSystem.PlayOneShot(_kingHitSfx[sfxIndex]);
 
         await UniTask.Delay(TimeSpan.FromSeconds(STANDARD_DELAY), DelayType.DeltaTime, PlayerLoopTiming.Update, destroyCancellationToken);
         
@@ -508,6 +517,9 @@ public class BattleController : MonoBehaviour, IEventsDispatcherClient
 
         ManaPoints -= characterData.Cost;
 
+        int sfxIndex = Random.Range(0, _placeAudio.Count);
+        _soundSystem.PlayOneShot(_placeAudio[sfxIndex]);
+
         return true;
     }
 
@@ -543,11 +555,19 @@ public class BattleController : MonoBehaviour, IEventsDispatcherClient
             case PlayerAbilityType.Damage:
                 ManaPoints -= abilityData.Cost;
                 abilitySelectedTarget.Damage(abilityData.Power);
+                if (abilityData.abilityAudio != null)
+                {
+                    _soundSystem.PlayOneShot(abilityData.abilityAudio);
+                }
                 return true;
             
             case PlayerAbilityType.Heal:
                 ManaPoints -= abilityData.Cost;
                 abilitySelectedTarget.Heal(abilityData.Power);
+                if (abilityData.abilityAudio != null)
+                {
+                    _soundSystem.PlayOneShot(abilityData.abilityAudio);
+                }
                 return true;
             
             default:

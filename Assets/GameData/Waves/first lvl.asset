@@ -21,8 +21,10 @@ MonoBehaviour:
   - Wave:
     - officer
     - soldier
+    - soldier
+    - rocketman
   - Wave:
+    - officer
     - officer
     - soldier
     - soldier
-    - rocketman

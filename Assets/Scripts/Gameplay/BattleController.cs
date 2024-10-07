@@ -259,10 +259,17 @@ public class BattleController : MonoBehaviour, IEventsDispatcherClient
             {
                 continue;
             }
-            
-            await character.HandleMainAbility(charactersOnTheFloor);
 
-            await UniTask.WaitUntil(() => !charactersOnTheFloor.Any(c => c.IsHandlingInProgress));
+            try
+            {
+                await character.HandleMainAbility(charactersOnTheFloor);
+            }
+            catch (Exception e)
+            {
+                Debug.LogError(e);
+            }
+
+            await UniTask.WaitUntil(() => !charactersOnTheFloor.Any(c => c != null && c.IsHandlingInProgress));
         }
         
         foreach (var character in playerUnitsOnTheFloor)
@@ -271,10 +278,17 @@ public class BattleController : MonoBehaviour, IEventsDispatcherClient
             {
                 continue;
             }
-            
-            await character.HandleMainAbility(charactersOnTheFloor);
-            
-            await UniTask.WaitUntil(() => !charactersOnTheFloor.Any(c => c.IsHandlingInProgress));
+
+            try
+            {
+                await character.HandleMainAbility(charactersOnTheFloor);
+            }
+            catch (Exception e)
+            {
+                Debug.LogError(e);
+            }
+
+            await UniTask.WaitUntil(() => !charactersOnTheFloor.Any(c => c != null && c.IsHandlingInProgress));
         }
 
         CleanUpFloor(floorIndex);
@@ -282,9 +296,16 @@ public class BattleController : MonoBehaviour, IEventsDispatcherClient
         var aliveCharactersOnTheFloor = GetAllAliveCharactersOnTheFloor(floorIndex);
         foreach (var character in aliveCharactersOnTheFloor)
         {
-            await character.HandleOnFloorFightEndAbility(aliveCharactersOnTheFloor);
-            
-            await UniTask.WaitUntil(() => !charactersOnTheFloor.Any(c => c.IsHandlingInProgress));
+            try
+            {
+                await character.HandleOnFloorFightEndAbility(aliveCharactersOnTheFloor);
+            }
+            catch (Exception e)
+            {
+                Debug.LogError(e);
+            }
+
+            await UniTask.WaitUntil(() => !charactersOnTheFloor.Any(c => c != null && c.IsHandlingInProgress));
         }
         
         await UniTask.Delay(TimeSpan.FromSeconds(STANDARD_DELAY), DelayType.DeltaTime, PlayerLoopTiming.Update, destroyCancellationToken);

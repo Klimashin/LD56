@@ -10,7 +10,7 @@ using UnityEngine;
 public class BattleController : MonoBehaviour, IEventsDispatcherClient
 {
     [SerializeField] private List<string> _availableCharacters;
-    [SerializeField] private List<WaveConfig> _enemiesWaves;
+    [SerializeField] private WavesConfig _testWaves;
     [SerializeField] private int _coreBaseHp = 15;
     [SerializeField] private int _manaPoints = 3;
     [SerializeField] private AudioClip _bgMusic;
@@ -31,6 +31,7 @@ public class BattleController : MonoBehaviour, IEventsDispatcherClient
 
     public BattlePhase CurrentBattlePhase => _currentBattlePhase;
     public int CoreHp { get; private set; }
+    private WavesConfig WavesConfig { get; set; }
 
     public enum BattlePhase
     {
@@ -97,7 +98,7 @@ public class BattleController : MonoBehaviour, IEventsDispatcherClient
     private async UniTaskVoid BattleRoutine()
     {
         _currentWaveIndex = 0;
-        var wave = _enemiesWaves[_currentWaveIndex];
+        var wave = WavesConfig.Waves[_currentWaveIndex];
         await SpawnWave(wave);
         
         while (!_winConditionReached)
@@ -164,9 +165,9 @@ public class BattleController : MonoBehaviour, IEventsDispatcherClient
         }
 
         _currentWaveIndex++;
-        if (_currentWaveIndex < _enemiesWaves.Count)
+        if (_currentWaveIndex < WavesConfig.Waves.Count)
         {
-            var wave = _enemiesWaves[_currentWaveIndex];
+            var wave = WavesConfig.Waves[_currentWaveIndex];
             await SpawnWave(wave);
         }
     }
@@ -318,6 +319,8 @@ public class BattleController : MonoBehaviour, IEventsDispatcherClient
 
     private void InitializeWithTestData()
     {
+        WavesConfig = _testWaves;
+        
         var characterDatas = new List<CharacterData>();
         foreach (var characterType in _availableCharacters)
         {

@@ -958,17 +958,7 @@ MonoBehaviour:
   - monkey
   - ann
   - monkey
-  _enemiesWaves:
-  - Wave:
-    - soldier
-    - soldier
-    - soldier
-  - Wave:
-    - officer
-  - Wave:
-    - officer
-    - soldier
-    - soldier
+  _testWaves: {fileID: 11400000, guid: 4c7b8dada2f7a274696074508067f21b, type: 2}
   _coreBaseHp: 30
   _manaPoints: 3
   _bgMusic: {fileID: 8300000, guid: 149a7d1a4bee7bb49b491edbf06525c4, type: 3}

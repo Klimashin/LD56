@@ -20,4 +20,4 @@ MonoBehaviour:
   MainAbility: {fileID: 11400000, guid: a0beba05b132c3142be27329d5d7f82a, type: 2}
   OnDeathAbility: {fileID: 0}
   OnFloorFightEndAbility: {fileID: 11400000, guid: ea4ef17644c7339478126c7101a5797e, type: 2}
-  Description: 'At the end of combat: allies gets +2 HP'
+  Description: 'At the end of combat: the most distant alliy gets +2 to maximum HP'

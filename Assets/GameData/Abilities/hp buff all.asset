@@ -12,5 +12,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 75ca2186884a11c4f9b5c20ba6fe248c, type: 3}
   m_Name: hp buff all
   m_EditorClassIdentifier: 
-  target: 6
+  target: 5
   _statusEffectData: {fileID: 11400000, guid: 398b8061556cc9c4ca23799032c8c14f, type: 2}

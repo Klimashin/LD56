@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 453da5a0edc0ef9468f86501250bbdfe, type: 3}
   m_Name: GameSettings
   m_EditorClassIdentifier: 
-  CoreBaseHp: 20
+  CoreBaseHp: 35
   BaseManaPoints: 3
   KingDamage: 5
   InitialCharactersPool:

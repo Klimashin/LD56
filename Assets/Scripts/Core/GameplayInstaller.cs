@@ -14,6 +14,7 @@ public class GameplayInstaller : MonoBehaviour, IInstaller
     [SerializeField] private FloatingTextFactory _floatingTextFactory;
     [SerializeField] private CinemachineVirtualCamera _cinemachineVirtualCamera;
     [SerializeField] private FieldPlaceholdersController _fieldPlaceholdersController;
+    [SerializeField] private UpgradeUI _upgradeUI;
     
     public void InstallBindings(ContainerBuilder containerBuilder)
     {
@@ -26,5 +27,6 @@ public class GameplayInstaller : MonoBehaviour, IInstaller
         containerBuilder.AddSingleton(_floatingTextFactory);
         containerBuilder.AddSingleton(_cinemachineVirtualCamera);
         containerBuilder.AddSingleton(_fieldPlaceholdersController);
+        containerBuilder.AddSingleton(_upgradeUI);
     }
 }

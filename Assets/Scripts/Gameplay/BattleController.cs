@@ -9,10 +9,6 @@ using UnityEngine;
 
 public class BattleController : MonoBehaviour, IEventsDispatcherClient
 {
-    [SerializeField] private List<string> _availableCharacters;
-    [SerializeField] private WavesConfig _testWaves;
-    [SerializeField] private int _coreBaseHp = 15;
-    [SerializeField] private int _manaPoints = 3;
     [SerializeField] private AudioClip _bgMusic;
 
     private BattleUI _battleUi;
@@ -21,9 +17,11 @@ public class BattleController : MonoBehaviour, IEventsDispatcherClient
     private CinemachineVirtualCamera _cinemachineVirtualCamera;
     private CinemachineTrackedDolly _cameraDollyCart;
     private SoundSystem _soundSystem;
+    private GameplayPersistentData _gameplayPersistentData;
+    private GameSettings _gameSettings;
+    private UpgradeUI _upgradeUi;
     private readonly Dictionary<CharacterPosition, Character> _playerTeamLayout = new ();
     private readonly Dictionary<CharacterPosition, Character> _enemyTeamLayout = new ();
-    private bool _winConditionReached = false;
     private BattlePhase _currentBattlePhase = BattlePhase.Deploy;
     private int _currentWaveIndex = -1;
     public int CurrentCameraWaypoint { get; private set; }
@@ -43,7 +41,15 @@ public class BattleController : MonoBehaviour, IEventsDispatcherClient
     public const float STANDARD_DELAY = 0.5f;
 
     [Inject]
-    private void Inject(BattleUI battleUI, CharactersDatabase charactersDatabase, GameField gameField, CinemachineVirtualCamera virtualCamera, SoundSystem soundSystem)
+    private void Inject(
+        BattleUI battleUI, 
+        CharactersDatabase charactersDatabase,
+        GameField gameField,
+        CinemachineVirtualCamera virtualCamera,
+        SoundSystem soundSystem,
+        GameSettings gameSettings,
+        GameplayPersistentData gameplayPersistentData,
+        UpgradeUI upgradeUI)
     {
         _battleUi = battleUI;
         _charactersDatabase = charactersDatabase;
@@ -51,21 +57,24 @@ public class BattleController : MonoBehaviour, IEventsDispatcherClient
         _cinemachineVirtualCamera = virtualCamera;
         _cameraDollyCart = _cinemachineVirtualCamera.GetCinemachineComponent<CinemachineTrackedDolly>();
         _soundSystem = soundSystem;
+        _gameplayPersistentData = gameplayPersistentData;
+        _gameSettings = gameSettings;
+        _upgradeUi = upgradeUI;
     }
 
     private void Start()
     {
         _soundSystem.PlayMusicClip(_bgMusic);
-        
+
         InitializeTeamLayouts();
         
         UpdateCameraPosition(0);
         
-        CoreHp = _coreBaseHp;
+        CoreHp = _gameSettings.CoreBaseHp;
 
         _battleUi.onDeployFinishedClickedAction += () => { UpdateBattlePhase(BattlePhase.Fight); };
         
-        InitializeWithTestData();
+        InitializeWithData();
 
         BattleRoutine().Forget();
     }
@@ -101,9 +110,9 @@ public class BattleController : MonoBehaviour, IEventsDispatcherClient
         var wave = WavesConfig.Waves[_currentWaveIndex];
         await SpawnWave(wave);
         
-        while (!_winConditionReached)
+        while (!IsGameWon() || IsGameLost())
         {
-            ManaPoints = _manaPoints;
+            ManaPoints = _gameSettings.BaseManaPoints;
             
             await UniTask.WaitUntil(ShouldProceedToFightPhase, PlayerLoopTiming.Update, destroyCancellationToken);
             
@@ -111,11 +120,50 @@ public class BattleController : MonoBehaviour, IEventsDispatcherClient
 
             UpdateBattlePhase(BattlePhase.Deploy);
         }
+        
+        UpdateBattlePhase(BattlePhase.EndGame);
+
+        OnEndBattle();
     }
 
     private void UpdateBattlePhase(BattlePhase phase)
     {
         _currentBattlePhase = phase;
+    }
+
+    private bool IsGameLost()
+    {
+        return CoreHp <= 0;
+    }
+
+    private bool IsGameWon()
+    {
+        return _currentWaveIndex >= WavesConfig.Waves.Count && GetAllAliveEnemies().Count == 0;
+    }
+
+    private void OnEndBattle()
+    {
+        bool isWon = !IsGameLost();
+        if (isWon)
+        {
+            if (_gameplayPersistentData.currentStage == GameSettings.MAX_STAGE_INDEX)
+            {
+                // handle end game
+                Debug.Log("Game was completely won! Not implemented yet.");
+            }
+            else
+            {
+                _gameplayPersistentData.currentStage++;
+                var upgrades = _gameSettings.GetRandomUpgradePackages(3);
+                _upgradeUi.Initialize(upgrades);
+                _upgradeUi.Show();
+            }
+        }
+        else
+        {
+            Debug.Log("Game was lost! Not implemented yet.");
+            // handle defeat
+        }
     }
 
     private async UniTask SpawnWave(WaveConfig wave)
@@ -181,8 +229,6 @@ public class BattleController : MonoBehaviour, IEventsDispatcherClient
         }
 
         var playerUnitsOnTheFloor = GetCharactersOnTheFloor(floorIndex, ZoneType.Left);
-        
-        // handle haste units
 
         var charactersOnTheFloor = enemiesOnTheFloor.Concat(playerUnitsOnTheFloor).ToList();
         foreach (var character in enemiesOnTheFloor)
@@ -244,6 +290,14 @@ public class BattleController : MonoBehaviour, IEventsDispatcherClient
                              && !character.IsDead 
                              && character.LayoutPos.floorIndex == floorIndex)
             .OrderBy(character => character.LayoutPos.zoneIndex)
+            .ToList();
+    }
+    
+    public List<Character> GetAllAliveEnemies()
+    {
+        return _enemyTeamLayout.Values
+            .Where(
+                character => character != null && !character.IsDead)
             .ToList();
     }
 
@@ -317,12 +371,20 @@ public class BattleController : MonoBehaviour, IEventsDispatcherClient
 
     private bool ShouldProceedToFightPhase() => _currentBattlePhase == BattlePhase.Fight;
 
-    private void InitializeWithTestData()
+    private void InitializeWithData()
     {
-        WavesConfig = _testWaves;
+        var wavesConfig = _gameSettings.GetWaveConfigForStage(_gameplayPersistentData.currentStage);
+        WavesConfig = wavesConfig;
         
         var characterDatas = new List<CharacterData>();
-        foreach (var characterType in _availableCharacters)
+        var availableCharacters = _gameplayPersistentData.charactersPool;
+        if (availableCharacters.Count == 0)
+        {
+            availableCharacters = _gameSettings.GetInitialCharacters();
+            _gameplayPersistentData.charactersPool.AddRange(availableCharacters);
+        }
+
+        foreach (var characterType in availableCharacters)
         {
             if (!_charactersDatabase.Values.TryGetValue(characterType, out var characterData))
             {

@@ -58,3 +58,4 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _soundSystem: {fileID: 11400000, guid: 2de76277c30770749a5f00ca8750559f, type: 2}
+  _gameSettings: {fileID: 11400000, guid: bc40cd67c29cd8c4bbf41c46361b4e90, type: 2}

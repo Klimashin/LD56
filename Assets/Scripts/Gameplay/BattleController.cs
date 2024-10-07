@@ -75,7 +75,10 @@ public class BattleController : MonoBehaviour, IEventsDispatcherClient
 
     private void Start()
     {
-        _soundSystem.PlayMusicClip(_bgMusic);
+        if (_gameplayPersistentData.currentStage > 0)
+        {
+            _soundSystem.PlayMusicClip(_bgMusic);
+        }
 
         InitializeTeamLayouts();
         

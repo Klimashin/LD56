@@ -14,20 +14,22 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Waves:
   - Wave:
-    - 'officer '
-    - 'soldier '
+    - officer
+    - soldier
     - soldier b
     - soldier r
   - Wave:
     - officer b
     - rocketman r
+    - soldier b
+    - soldier r
   - Wave:
     - soldier r
     - soldier r
-    - soldier r
-    - 'rocketman '
+    - rocketman b
+    - rocketman
   - Wave:
     - officer r
-    - 'officer '
+    - officer
     - soldier b
-    - rocketman b
+    - rocketman r

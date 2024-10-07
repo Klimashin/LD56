@@ -76,7 +76,7 @@ public enum ZoneType
 [Serializable]
 public class Floor
 {
-    public const int FLOOR_SLOTS_COUNT = 3;
+    public const int FLOOR_SLOTS_COUNT = 4;
     
     public Transform FloorBottomCenter;
     public Vector2 ZoneSize;

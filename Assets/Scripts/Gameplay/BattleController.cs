@@ -35,7 +35,8 @@ public class BattleController : MonoBehaviour, IEventsDispatcherClient
     public enum BattlePhase
     {
         Deploy,
-        Fight
+        Fight,
+        EndGame
     }
     
     public const float STANDARD_DELAY = 0.5f;

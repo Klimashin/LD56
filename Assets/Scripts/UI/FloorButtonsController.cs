@@ -1,4 +1,3 @@
-using System;
 using Reflex.Attributes;
 using UnityEngine;
 using UnityEngine.UI;
@@ -21,6 +20,14 @@ public class FloorButtonsController : MonoBehaviour
         {
             int index = i;
             _buttons[i].onClick.AddListener(() => OnFloorButtonClick(index));
+        }
+    }
+
+    private void Update()
+    {
+        for (var i = 0; i < _buttons.Length; i++)
+        {
+            _buttons[i].gameObject.SetActive(_battleController.CurrentBattlePhase == BattleController.BattlePhase.Deploy);
         }
     }
 

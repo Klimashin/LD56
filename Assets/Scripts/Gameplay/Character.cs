@@ -12,6 +12,8 @@ public class Character : MonoBehaviour
     [SerializeField] private SpriteRenderer _sprite;
     [SerializeField] private float _floatingTextOffsetY = 1.5f;
     [SerializeField] private GameObject DeathParticlesPrefab;
+    [SerializeField] private Canvas _uiCanvas;
+    [SerializeField] private CharacterHintRaycastZone _hintRaycastZone;
     
     private CharacterData _characterData;
 
@@ -34,10 +36,11 @@ public class Character : MonoBehaviour
     private readonly HashSet<string> _handlesHashSet = new ();
 
     [Inject]
-    private void Inject(BattleController battleController, FloatingTextFactory floatingTextFactory)
+    private void Inject(BattleController battleController, FloatingTextFactory floatingTextFactory, Camera camera)
     {
         _battleController = battleController;
         _floatingTextFactory = floatingTextFactory;
+        _uiCanvas.worldCamera = camera;
     }
 
     public void Initialize(CharacterData characterData, CharacterPosition layoutPos)
@@ -47,6 +50,8 @@ public class Character : MonoBehaviour
         _sprite.flipX = layoutPos.zoneType == ZoneType.Right;
         
         Hp = MaxHp;
+
+        _hintRaycastZone.Initialize(_characterData.Description);
 
         UpdateDisplays();
     }
@@ -243,5 +248,10 @@ public class Character : MonoBehaviour
         {
             StatusEffects.Remove(expiredEffectPair.Key);
         }
+    }
+
+    public string GetDescription()
+    {
+        return _characterData?.Description ?? string.Empty;
     }
 }

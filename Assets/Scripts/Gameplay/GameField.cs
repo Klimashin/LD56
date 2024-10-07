@@ -13,10 +13,8 @@ public class GameField : MonoBehaviour
             : Floors[characterPosition.floorIndex].RightZone.GetSlotPosition(characterPosition.zoneIndex);
     }
 
-    public ZoneHitData GetZoneHitData(RaycastResult raycastResult)
+    public ZoneHitData GetZoneHitData(Vector2 hitPos)
     {
-        var hitPos = (Vector2)raycastResult.worldPosition;
-
         for (int floorIndex = 0; floorIndex < Floors.Length; floorIndex++)
         {
             var floor = Floors[floorIndex];

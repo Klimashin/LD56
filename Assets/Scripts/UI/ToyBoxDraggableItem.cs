@@ -5,10 +5,12 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-public class ToyBoxDraggableItem : MonoBehaviour, IBeginDragHandler, IEndDragHandler, IDragHandler
+public class ToyBoxDraggableItem : MonoBehaviour, IBeginDragHandler, IEndDragHandler, IDragHandler, IPointerEnterHandler, IPointerExitHandler
 {
     [SerializeField] private Image raycastTarget;
     [SerializeField] private TextMeshProUGUI _costText;
+    [SerializeField] private TextMeshProUGUI _hintText;
+    [SerializeField] private GameObject _hintTextTransform;
     
     private Vector3 _initialPos;
     private Physics2DRaycaster _physics2DRaycaster;
@@ -30,10 +32,13 @@ public class ToyBoxDraggableItem : MonoBehaviour, IBeginDragHandler, IEndDragHan
     {
         _characterData = characterData;
         _costText.text = characterData.Cost.ToString();
+        _hintText.text = characterData.Description;
     }
     
     public void OnBeginDrag(PointerEventData eventData)
     {
+        _hintTextTransform.gameObject.SetActive(false);
+        
         if (_battleController.ManaPoints < _characterData.Cost)
         {
             return;
@@ -63,7 +68,7 @@ public class ToyBoxDraggableItem : MonoBehaviour, IBeginDragHandler, IEndDragHan
         {
             if (raycastResult.gameObject.TryGetComponent<GameField>(out var gameField))
             {
-                var zoneHitData = gameField.GetZoneHitData(raycastResult);
+                var zoneHitData = gameField.GetZoneHitData(raycastResult.worldPosition);
                 Debug.Log($"GameField was hit! HitData: {zoneHitData}");
                 if (_battleController.PlacePlayerCharacter(_characterData, zoneHitData))
                 {
@@ -92,7 +97,7 @@ public class ToyBoxDraggableItem : MonoBehaviour, IBeginDragHandler, IEndDragHan
         {
             if (raycastResult.gameObject.TryGetComponent<GameField>(out var gameField))
             {
-                var zoneHitData = gameField.GetZoneHitData(raycastResult);
+                var zoneHitData = gameField.GetZoneHitData(raycastResult.worldPosition);
                 if (!zoneHitData.zoneHit)
                 {
                     continue;
@@ -104,5 +109,15 @@ public class ToyBoxDraggableItem : MonoBehaviour, IBeginDragHandler, IEndDragHan
                 }
             }
         }
+    }
+
+    public void OnPointerEnter(PointerEventData eventData)
+    {
+        _hintTextTransform.gameObject.SetActive(true);
+    }
+
+    public void OnPointerExit(PointerEventData eventData)
+    {
+        _hintTextTransform.gameObject.SetActive(false);
     }
 }

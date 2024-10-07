@@ -71,7 +71,7 @@ public class PlayerAbilityDraggable : MonoBehaviour, IBeginDragHandler, IEndDrag
         {
             if (raycastResult.gameObject.TryGetComponent<GameField>(out var gameField))
             {
-                var zoneHitData = gameField.GetZoneHitData(raycastResult);
+                var zoneHitData = gameField.GetZoneHitData(raycastResult.worldPosition);
                 if (_battleController.TryApplyAbility(_abilityData, zoneHitData))
                 {
                     break;

@@ -44,6 +44,7 @@ public class PlayerAbilityDraggable : MonoBehaviour, IBeginDragHandler, IEndDrag
         }
 
         _initialPos = transform.position;
+        _hintTextTransform.gameObject.SetActive(false);
         raycastTarget.raycastTarget = false;
 
         if (_abilityData.target == PlayerAbilityTarget.PlayerUnit)

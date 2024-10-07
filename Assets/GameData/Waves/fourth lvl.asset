@@ -20,16 +20,11 @@ MonoBehaviour:
     - soldier r
   - Wave:
     - officer b
-    - rocketman r
-    - soldier b
     - soldier r
+    - soldier b
+    - rocketman r
   - Wave:
+    - soldier
     - soldier r
     - soldier r
     - rocketman b
-    - rocketman
-  - Wave:
-    - officer r
-    - officer
-    - soldier b
-    - rocketman r

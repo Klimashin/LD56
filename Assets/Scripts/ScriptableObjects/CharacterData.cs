@@ -11,4 +11,5 @@ public class CharacterData : ScriptableObject
     [SerializeField] public Ability MainAbility;
     [SerializeField] public Ability OnDeathAbility;
     [SerializeField] public Ability OnFloorFightEndAbility;
+    [SerializeField, TextArea] public string Description;
 }

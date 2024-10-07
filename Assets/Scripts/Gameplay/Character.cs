@@ -83,11 +83,16 @@ public class Character : MonoBehaviour
 
         var mainAbility = _characterData.MainAbility;
         var targets = mainAbility.SelectTargets(possibleTargets, this);
-            
-        await MainAbilityAnimation();
 
-        mainAbility.Apply(targets, this);
-        
+        if (targets.Count > 0)
+        {
+            await MainAbilityAnimation();
+
+            mainAbility.Apply(targets, this);
+            
+            await UniTask.Delay(TimeSpan.FromSeconds(BattleController.STANDARD_DELAY), DelayType.DeltaTime, PlayerLoopTiming.Update, destroyCancellationToken);
+        }
+
         _handlesHashSet.Remove(nameof(HandleMainAbility));
     }
     

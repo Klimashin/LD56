@@ -223,14 +223,14 @@ public class BattleController : MonoBehaviour, IEventsDispatcherClient
     private async UniTask HandleFloorFight(int floorIndex)
     {
         var enemiesOnTheFloor = GetCharactersOnTheFloor(floorIndex, ZoneType.Right);
-        if (enemiesOnTheFloor.Count == 0)
+        var playerUnitsOnTheFloor = GetCharactersOnTheFloor(floorIndex, ZoneType.Left);
+        var charactersOnTheFloor = enemiesOnTheFloor.Concat(playerUnitsOnTheFloor).ToList();
+
+        if (charactersOnTheFloor.Count == 0)
         {
             return;
         }
 
-        var playerUnitsOnTheFloor = GetCharactersOnTheFloor(floorIndex, ZoneType.Left);
-
-        var charactersOnTheFloor = enemiesOnTheFloor.Concat(playerUnitsOnTheFloor).ToList();
         foreach (var character in enemiesOnTheFloor)
         {
             if (character.IsDead)
@@ -241,8 +241,6 @@ public class BattleController : MonoBehaviour, IEventsDispatcherClient
             await character.HandleMainAbility(charactersOnTheFloor);
 
             await UniTask.WaitUntil(() => !charactersOnTheFloor.Any(c => c.IsHandlingInProgress));
-            
-            await UniTask.Delay(TimeSpan.FromSeconds(STANDARD_DELAY), DelayType.DeltaTime, PlayerLoopTiming.Update, destroyCancellationToken);
         }
         
         foreach (var character in playerUnitsOnTheFloor)
@@ -255,8 +253,6 @@ public class BattleController : MonoBehaviour, IEventsDispatcherClient
             await character.HandleMainAbility(charactersOnTheFloor);
             
             await UniTask.WaitUntil(() => !charactersOnTheFloor.Any(c => c.IsHandlingInProgress));
-            
-            await UniTask.Delay(TimeSpan.FromSeconds(STANDARD_DELAY), DelayType.DeltaTime, PlayerLoopTiming.Update, destroyCancellationToken);
         }
 
         CleanUpFloor(floorIndex);

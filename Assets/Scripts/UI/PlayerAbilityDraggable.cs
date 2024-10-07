@@ -5,12 +5,14 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-public class PlayerAbilityDraggable : MonoBehaviour, IBeginDragHandler, IEndDragHandler, IDragHandler
+public class PlayerAbilityDraggable : MonoBehaviour, IBeginDragHandler, IEndDragHandler, IDragHandler, IPointerEnterHandler, IPointerExitHandler
 {
     [SerializeField] private Image raycastTarget;
     [SerializeField] private TextMeshProUGUI _costText;
     [SerializeField] private TextMeshProUGUI _powerText;
     [SerializeField] private PlayerAbilityData _abilityData;
+    [SerializeField] private TextMeshProUGUI _hintText;
+    [SerializeField] private GameObject _hintTextTransform;
     
     private Vector3 _initialPos;
     private Physics2DRaycaster _physics2DRaycaster;
@@ -31,6 +33,7 @@ public class PlayerAbilityDraggable : MonoBehaviour, IBeginDragHandler, IEndDrag
     {
         _costText.text = _abilityData.Cost.ToString();
         _powerText.text = _abilityData.Power.ToString();
+        _hintText.text = _abilityData.Description;
     }
     
     public void OnBeginDrag(PointerEventData eventData)
@@ -90,5 +93,15 @@ public class PlayerAbilityDraggable : MonoBehaviour, IBeginDragHandler, IEndDrag
         }
         
         transform.position = eventData.position;
+    }
+
+    public void OnPointerEnter(PointerEventData eventData)
+    {
+        _hintTextTransform.gameObject.SetActive(true);
+    }
+
+    public void OnPointerExit(PointerEventData eventData)
+    {
+        _hintTextTransform.gameObject.SetActive(false);
     }
 }

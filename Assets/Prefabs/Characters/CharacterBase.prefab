@@ -1065,11 +1065,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2528565119633735091, guid: a9d9a035c2c96ad4dafe254baa332c07, type: 3}
       propertyPath: m_SizeDelta.x
-      value: 493.93
+      value: 400
       objectReference: {fileID: 0}
     - target: {fileID: 2528565119633735091, guid: a9d9a035c2c96ad4dafe254baa332c07, type: 3}
       propertyPath: m_SizeDelta.y
-      value: 582.93994
+      value: 400
       objectReference: {fileID: 0}
     - target: {fileID: 2528565119633735091, guid: a9d9a035c2c96ad4dafe254baa332c07, type: 3}
       propertyPath: m_LocalPosition.x
@@ -1119,9 +1119,25 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4959084405395444870, guid: a9d9a035c2c96ad4dafe254baa332c07, type: 3}
+      propertyPath: m_fontSize
+      value: 35
+      objectReference: {fileID: 0}
+    - target: {fileID: 4959084405395444870, guid: a9d9a035c2c96ad4dafe254baa332c07, type: 3}
+      propertyPath: m_fontSizeBase
+      value: 35
+      objectReference: {fileID: 0}
+    - target: {fileID: 4959084405395444870, guid: a9d9a035c2c96ad4dafe254baa332c07, type: 3}
+      propertyPath: m_VerticalAlignment
+      value: 512
+      objectReference: {fileID: 0}
     - target: {fileID: 8925528148875778049, guid: a9d9a035c2c96ad4dafe254baa332c07, type: 3}
       propertyPath: m_Name
       value: HintPanel
+      objectReference: {fileID: 0}
+    - target: {fileID: 8925528148875778049, guid: a9d9a035c2c96ad4dafe254baa332c07, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

@@ -314,7 +314,6 @@ MonoBehaviour:
   _cinemachineVirtualCamera: {fileID: 690602447}
   _fieldPlaceholdersController: {fileID: 96442161}
   _upgradeUI: {fileID: 4001834609787657520}
-  _hintUi: {fileID: 0}
 --- !u!114 &96442160
 MonoBehaviour:
   m_ObjectHideFlags: 0
